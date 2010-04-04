@@ -141,3 +141,14 @@
 	-moz-border-radius-topright: 0;
 }
 
+
+/* fix spacing issue for Safari (not working for Firefox)
+----------------------------------*/
+.ui-tabs.tablist .ui-tabs-nav li.ui-state-default,
+.ui-tabs.tablist .ui-tabs-nav li.ui-tabs-selected {
+	background: none !important;
+}
+.ui-tabs.tablist .ui-tabs-nav li.ui-state-default a,
+.ui-tabs.tablist .ui-tabs-nav li.ui-tabs-selected a {
+	padding-right: 12px !important;
+}
