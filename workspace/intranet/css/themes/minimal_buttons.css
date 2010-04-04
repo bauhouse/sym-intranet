@@ -1,0 +1,213 @@
+/*
+-----------------------------------------------
+Intranet - Themes - Minimalist
+----------------------------------------------- */
+body {
+	background:#eee;
+}
+
+
+/* anchors
+----------------------------------------------- */
+a {
+	color: #000;
+	font-weight:bold;
+	text-decoration: none;
+}
+a:hover {
+	color:#666;
+}
+
+
+/* header
+----------------------------------------------- */
+#header {
+	background:transparent;
+}
+
+
+/* main navigation
+----------------------------------------------- */
+#main-nav li a {
+	background:#fff;
+	color:#000;
+}
+#main-nav li a:hover {
+	background:#ddd;
+}
+#main-nav li a:active {
+	background:#999;
+	color:#fff;
+}
+#main-nav li.current a,
+#main-nav li.current a:hover {
+	background:#222;
+	color:#fff;
+}
+#main-nav li a {
+	border-radius: 1.2em;
+	-webkit-border-radius: 1.2em;
+	-moz-border-radius: 1.2em;
+}
+
+
+/* secondary navigation
+----------------------------------------------- */
+#secondary-nav,
+#secondary-nav ul li a {
+	background:#222;
+}
+#secondary-nav ul li:hover a,
+#secondary-nav ul li ul,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a {
+	background:#555;
+}
+#secondary-nav ul li a:focus,
+#secondary-nav ul li:hover a:active,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a:hover {
+	background:#444;
+}
+#secondary-nav ul li:hover ul li a:active {
+	background:#222;
+}
+
+
+/* page heading
+----------------------------------------------- */
+h2#page-heading {
+	color:#000;
+}
+
+
+/* boxes
+----------------------------------------------- */
+.box h2 a,
+.box h2 a.visible {
+	background:#fff;
+	font-weight:bold;
+}
+.box h2 a:hover {
+	background:#ccc;
+	color:#000;
+}
+.block {
+	background:#fff;
+	border-top:1px solid #ddd;
+}
+
+
+/* footer
+----------------------------------------------- */
+#site_info .box {
+	background-color:#fff;
+}
+
+
+/* jquery tabs - horizontal
+----------------------------------------------- */
+.ui-tabs .ui-tabs-nav {
+	padding-bottom:5px;
+}
+.ui-tabs .ui-tabs-nav li a {
+	line-height:2.5em;
+}
+.ui-tabs .ui-state-default,
+.ui-tabs .ui-widget-content .ui-state-default {
+	background: #ccc;
+}
+.ui-state-default a,
+.ui-widget-content .ui-state-default a {
+	color:#000;
+}
+.ui-tabs .ui-state-hover,
+.ui-tabs .ui-widget-content .ui-state-hover,
+.ui-tabs .ui-state-focus,
+.ui-tabs .ui-widget-content .ui-state-focus {
+	background: #777;
+}
+.ui-state-hover a,
+.ui-state-hover a:hover {
+	color: #fff;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+	background: #000;
+}
+.ui-tabs .ui-state-active,
+.ui-tabs .ui-widget-content .ui-state-active {
+	background: #000;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+	color: #fff;
+}
+
+
+/* jquery tabs - vertical
+----------------------------------------------- */
+.ui-tabs .tablist .ui-state-default a {
+	border-color:#bbb;
+	line-height: 1em;
+	}
+.ui-tabs .tablist li a {
+	line-height:1em;
+}
+.ui-tabs .tablist li {
+	margin-top:4px;
+}
+
+
+/* jquery tabs - rounded corners
+----------------------------------------------- */
+.ui-tabs-nav .ui-state-default,
+.ui-tabs-nav .ui-widget-content .ui-state-default,
+.ui-tabs-nav .ui-state-hover,
+.ui-tabs-nav .ui-widget-content .ui-state-hover,
+.ui-tabs-nav .ui-state-active,
+.ui-tabs-nav .ui-widget-content .ui-state-active {
+	border-radius:1.2em;
+	-webkit-border-radius:1.2em;
+	-moz-border-radius:1.2em;
+}
+.tablist .ui-tabs-nav .ui-state-default,
+.tablist .ui-tabs-nav .ui-widget-content .ui-state-default,
+.tablist .ui-tabs-nav .ui-state-hover,
+.tablist .ui-tabs-nav .ui-widget-content .ui-state-hover,
+.tablist .ui-tabs-nav .ui-state-active,
+.tablist .ui-tabs-nav .ui-widget-content .ui-state-active {
+	border-radius:1.2em;
+	-webkit-border-radius:1.2em;
+	-moz-border-radius:1.2em;
+}
+
+
+
+/* images
+----------------------------------------------- */
+#article a.image,
+.article a.image {
+	border-color: #999;
+}
+#article a.image:hover,
+.article a.image:hover {
+	border-color: #000;
+}
+#article p.meta,
+.article p.meta {
+	color:#555;
+	border-color: #999;
+}
+
+
+/* forms
+----------------------------------------------- */
+fieldset {
+	background: #eee;
+	border-color: #bbb;
+}
+fieldset legend {
+	border-color: #bbb;
+}

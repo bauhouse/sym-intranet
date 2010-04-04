@@ -1,0 +1,192 @@
+/*
+-----------------------------------------------
+Intranet - Themes - Blue
+----------------------------------------------- */
+body {
+	background:#e5f3fa;
+}
+
+
+/* anchors
+----------------------------------------------- */
+a {
+	color: #0065b5;
+	font-weight:bold;
+	text-decoration: none;
+}
+a:hover {
+	color:#333;
+}
+
+
+/* header
+----------------------------------------------- */
+#header {
+	background:#004379;
+}
+#branding h1 a {
+	color: #fff;
+}
+
+
+/* main navigation
+----------------------------------------------- */
+#main-nav li a {
+	background:#002f56;
+}
+#main-nav li a:hover {
+	background:#001b32;
+}
+#main-nav li a:active {
+	background:#216194;
+}
+#main-nav li.current a,
+#main-nav li.current a:hover {
+	background:#fff;
+	color: #0065b5;
+}
+
+
+/* secondary navigation
+----------------------------------------------- */
+#secondary-nav,
+#secondary-nav ul li a {
+	background:#001b32;
+}
+#secondary-nav ul li:hover a,
+#secondary-nav ul li ul,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a {
+	background:#216194;
+}
+#secondary-nav ul li a:focus,
+#secondary-nav ul li:hover a:active,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a:hover {
+	background:#104e7f;
+}
+#secondary-nav ul li:hover ul li a:active {
+	background:#003866;
+}
+
+
+/* page heading
+----------------------------------------------- */
+h2#page-heading {
+	color:#0065b5;
+}
+
+
+/* boxes
+----------------------------------------------- */
+.box h2 a,
+.box h2 a.visible {
+	color:#fff;
+	background:#002f56;
+}
+.box h2 a:hover {
+	background:#004379;
+}
+.block {
+	background-color:#c0d8e2;
+}
+
+
+/* footer
+----------------------------------------------- */
+#site_info .box {
+	background-color:#c0d8e2;
+}
+
+
+/* jquery tabs - horizontal
+----------------------------------------------- */
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+	background: #99b8c8;
+}
+.ui-state-default a,
+.ui-widget-content .ui-state-default a {
+	color:#002f56;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+	background: #759baf;
+}
+.ui-state-hover a,
+.ui-state-hover a:hover {
+	color: #fff;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+	background: #004379;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+	color: #fff;
+}
+
+
+/* jquery tabs - vertical
+----------------------------------------------- */
+.tabs .tablist {
+	background:#acc7d3;
+}
+.ui-tabs .tablist .ui-state-default a {
+	border-color:#99b8c8;
+	}
+.tablist .ui-state-default a {
+	background: #acc7d3;
+	}
+.tablist .ui-state-hover a {
+	background: #759baf;
+	}
+.tablist .ui-state-active a {
+	background: #fff;
+	color: #0065b5;
+	}
+
+
+/* images
+----------------------------------------------- */
+#article a.image,
+.article a.image {
+	border-color: #99b8c8;
+}
+#article a.image:hover,
+.article a.image:hover {
+	border-color: #0065b5;
+}
+#article p.meta,
+.article p.meta {
+	color:#5a879f;
+	border-color: #99b8c8;
+}
+
+
+/* forms
+----------------------------------------------- */
+fieldset {
+	background: #c0d8e2;
+	border-color: #99b8c8;
+}
+fieldset legend {
+	border-color: #99b8c8;
+}
+
+
+/* calendar
+----------------------------------------------- */
+.calendar-menu li a {
+	color: #c0d8e2;
+}
+.calendar-menu li a:hover {
+	color: #fff;
+}
+.calendar-menu li.current a {
+	color: #fff;
+	border-color: #0065b5;
+}
