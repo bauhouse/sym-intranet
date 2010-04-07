@@ -1,0 +1,668 @@
+/*
+-----------------------------------------------
+Intranet - Content - CSS
+----------------------------------------------- */
+
+/* table
+----------------------------------------------- */
+table {
+	width:100%;
+	border:1px solid #bbb;
+	margin-bottom:10px;
+}
+col.colC {
+	width:8em;
+}
+th, td {
+	padding:.2em 1em;
+	text-align:left;
+}
+thead th {
+	border-bottom:2px solid #888;
+	background:#bbb;
+	padding:.4em 1em .2em;
+}
+thead th.table-head {
+	font-size:1em;
+	font-weight:normal;
+	text-transform:uppercase;
+	color:#fff;
+	background:#555;
+	border:1px solid #555;
+}
+tbody th,
+tbody td {
+	border-top:1px solid #bbb;
+	border-bottom:1px solid #bbb;
+	background:#eee;
+}
+tbody tr.odd th,
+tbody tr.odd td {
+	background:#fff;
+}
+tfoot th,
+tfoot td {
+	border-top:2px solid #666;
+	background:#eee;
+}
+tfoot tr.total th,
+tfoot tr.total td {
+	border-top:6px double #666;
+}
+tfoot tr.total th {
+	text-transform:uppercase;
+}
+th.currency,
+td.currency {
+	text-align:right;
+}
+
+
+/* articles
+----------------------------------------------- */
+.articles {
+	padding:0;
+}
+.articles h2 {
+	margin:0;
+}
+.articles .block {
+	padding-top:0;
+}
+.articles .block .article {
+	padding-bottom:0;
+	margin:0 -10px;
+}
+.article {
+	border-top:1px solid #666;
+	padding-top:.5em;
+}
+.box .article {
+	border-top:3px solid #fff;
+	padding:10px;
+	overflow:auto;
+}
+.article h2 {
+	font-size:2em;
+	font-weight:normal;
+	text-transform:none;
+	color:#333;
+	background:transparent;
+	padding:0;
+	margin:0;
+	border:none;
+}
+.article h3 {
+	margin-bottom:.2em;
+	font-size:1.6em;
+}
+.box .first {
+	border-top:none;
+}
+.article h4 {
+	font-size:1.2em;
+	text-transform:uppercase;
+	margin-bottom:.5em;
+}
+.article a.image {
+	float:left; 
+	/* margin:3px 10px 3px 0; */
+	margin-right:10px;
+	margin-bottom:10px;
+	padding:4px;
+	border:1px solid #bbb;
+	background:#fff;
+}
+.article a.image:hover {
+	border:1px solid #666;
+}
+.article a.image img {
+	float:left; 
+}
+.article p.meta {
+	color:#666;
+	border-top:1px dotted #999;
+	border-bottom:1px dotted #999;
+	padding:.3em 0;
+	margin-bottom:.8em;
+}
+
+
+/* AJAX sliding shelf
+----------------------------------------------- */
+#loading {float:right; margin-right:14px; margin-top:-2px;}
+
+
+/* Accordian
+----------------------------------------------- */
+.toggler {
+	color: #222;
+	margin: 0;
+	padding: 2px 5px;
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-top: 1px solid #f5f5f5;
+	border-left: 1px solid #f5f5f5;
+	font-size:1.1em;
+	font-weight: normal;
+}
+.element h4 {
+	margin: 0;
+	padding:4px;
+	line-height:1.2em;
+}
+.element p {
+	margin: 0;
+	padding: 4px;
+}
+.float-right {
+	padding:10px 20px;
+	float:right;
+}
+
+#accordian-block {
+	padding-bottom:10px;
+}
+
+
+/* Mootools Kwicks
+----------------------------------------------- */
+#kwick-box { 
+	padding:0;
+	overflow:hidden;
+}
+#kwick-box h2 { 
+	margin:0;
+}
+#kwick {
+	position: relative;
+}
+#kwick .kwicks {
+	display: block;
+	background: #999;
+	height: 120px;
+	list-style:none;
+	margin:0;
+	overflow:hidden;
+}
+#kwick li {
+	float: left;
+	margin:0;
+	padding:0;
+}
+#kwick .kwick {
+	display: block;
+	cursor: pointer;
+	overflow: hidden;
+	height: 100px;
+	width: 215px;
+	padding: 10px;
+	background: #fff;
+}
+#kwick .kwick span {
+	color:#fff;
+}
+#kwick .one {
+	background: #666;
+}
+#kwick .two {
+	background: #777;
+}
+#kwick .three {
+	background: #888;
+}
+#kwick .four {
+	background: #999;
+}
+
+
+/* articles
+----------------------------------------------- */
+#article {
+	padding:20px 10px;
+}
+#article a.image {
+	float:left; 
+	margin:3px 10px 3px 0; 
+	padding:4px;
+	border:1px solid #bbb;
+	background:#fff;
+}
+#article a.image:hover {
+	border:1px solid #666;
+}
+#article a.image img {
+	float:left; 
+}
+#article p {
+	font-size:1.2em;
+}
+#article p.meta {
+	color:#666;
+	border-top:1px dotted #999;
+	border-bottom:1px dotted #999;
+	padding:.3em 0;
+	margin-bottom:.8em;
+}
+#article h2 {
+	font-size:2.5em;
+	font-weight:normal;
+	text-transform:none;
+	color:#333;
+	background:transparent;
+	padding:0;
+	margin:0;
+	margin-bottom:.5em;
+	border:none;
+}
+#article h2,
+#article h3,
+#article h4,
+#article h5,
+#article h6 {
+	margin-top:1em;
+	margin-bottom:.8em;
+}
+#article h2.first {
+	margin-top:0;
+}
+
+
+/* blog comments - single column
+----------------------------------------------- */
+#comments {
+	padding-top:0;
+}
+.comments {
+	padding:0;
+}
+.comments h2 {
+	margin:0;
+}
+.comments p {
+	font-size:1.1em;
+}
+.comments ol {
+	margin-bottom:0;
+	list-style:none;
+}
+.comments li {
+	margin:0;
+}
+.comments .comment {
+	border-top:3px solid #fff;
+	padding:10px;
+	position:relative;
+	overflow:auto;
+}
+.comment-meta ul {
+	list-style:none;
+	margin-bottom:0;
+	padding-top:.8em;
+	margin-right:2em;
+	height:42px;
+}
+.comment-meta ul li {
+	display:inline;
+	margin-right:8px;
+}
+.comment .avatar {
+	float:left;
+	margin-right:10px;
+}
+.comment .avatar img {
+	padding:3px;
+	background:#fff;
+	border:1px solid #bbb;
+}
+.comment .avatar:hover img {
+	border:1px solid #666;
+}
+.comment .id {
+	position:absolute;
+	margin-right:0;
+	top:0;
+	right:0;
+}
+.comment .id span {
+	display:none;
+}
+.comment .id a {
+	display:block;
+	color:#888;
+	background:#ccc;
+	padding:3px 8px;
+}
+.comment .id a:hover {
+	color:#fff;
+	background:#666;
+}
+.comment .author {
+	font-size:1.2em;
+}
+.comment .author cite {
+	font-style:normal;
+}
+
+
+/* blog comments - columns
+----------------------------------------------- */
+.columns .comment-meta {
+	width:35%;
+	float:left;
+}
+.columns .comment-meta ul {
+	float:left;
+	list-style:none;
+	margin-bottom:0;
+	margin-right:10px;
+	padding-top:0;
+	height:auto;
+}
+.columns .comment-meta ul li {
+	display:block;
+}
+.columns .comment-body {
+	margin-left:35%;
+	margin-right:8%;
+}
+
+
+/* code
+----------------------------------------------- */
+pre {
+	background-color:#EFEFEF;
+	border-left:1px solid #CCCCCC;
+	display:block;
+	margin:2em 0;
+	overflow:auto;
+	padding:1em;
+	white-space:normal;
+}
+pre code {
+	display:block;
+	white-space:pre;
+}
+code {
+	background-color:#EFEFEF;
+	color:#555555;
+	font-family:monospace;
+	font-size:11px;
+}
+
+
+/* blockquote
+----------------------------------------------- */
+blockquote {
+	margin-bottom:1em;
+}
+
+
+/* fluid width images
+----------------------------------------------- */
+.main-image {
+	height:200px;
+	overflow:hidden;
+}
+.box-image {
+	height:100px;
+	overflow:hidden;
+}
+
+
+/* photos
+----------------------------------------------- */
+#elsewhere .block {
+	overflow-x:hidden;
+}
+#photos {
+	display:block;
+	margin:10px;
+	overflow-x:hidden;
+}
+#photos h6 {
+	margin-top:0;
+	float:left;
+}
+.photos-box {
+	float:left;
+	width:1560px;
+}
+#photos a {
+	float:left;
+	margin-right:2px;
+	margin-bottom:2px;
+}
+#photos img {float:left; border:none}
+
+
+/* handbook
+----------------------------------------------- */
+#handbook .box {
+	/* margin-bottom:0; */
+	padding-bottom:0;
+}
+#handbook h6 {
+	margin-top:10px;
+}
+#handbook ul {
+	margin-bottom:20px;
+}
+
+
+/* table box
+----------------------------------------------- */
+.table {
+	padding:0;
+}
+.table h2 {
+	margin:0;
+}
+.table .block {
+	padding:0;
+}
+.table table {
+	margin-bottom:0;
+}
+
+
+/* staff profile
+----------------------------------------------- */
+.photo img {
+	border:1px solid #bbb;
+	background:#fff;
+	padding:4px;
+	float:left;
+}
+.photo {
+	float:left;
+	margin-bottom:10px;
+}
+.photo:hover img {
+	border:1px solid #666;
+}
+.vcard .name {
+	font-size:2em;
+}
+
+#staff-profile .vcard {
+	margin-left:145px;
+	padding-bottom:10px;
+}
+
+
+/* department staff
+----------------------------------------------- */
+#staff-department {
+	padding:0;
+}
+#staff-department .block {
+	padding-top:0;
+}
+#staff-department h2 {
+	margin:0;
+}
+#staff-department .vcard {
+	margin-left:80px;
+	padding-bottom:10px;
+}
+#staff-department .vcard .name {
+	font-size:1.5em;
+}
+#staff-department .staff {
+	border-top:3px solid #fff;
+	padding:10px 10px 0 10px;
+}
+
+
+/* thumbnails
+----------------------------------------------- */
+.thumbnails {
+	padding-right:0;
+}
+.thumbnails h2 {
+	margin-right:0;
+}
+.thumbnails a {
+	margin-right:10px;
+}
+.thumbnails .small a {
+	margin-right:6px;
+	margin-bottom:6px;
+}
+.thumbnails .small img {
+	padding:3px;
+}
+.thumbnails .block {
+	padding:10px 0 0 10px;
+}
+
+/* staff: managers / organization
+----------------------------------------------- */
+#staff-managers,
+#staff-organization {
+	padding:0;
+}
+#staff-managers h2,
+#staff-organization h2 {
+	margin:0;
+}
+#staff-organization .block {
+	padding-right:4px;
+	padding-bottom:4px;
+}
+
+
+/* main image
+----------------------------------------------- */
+#main-image {
+	margin-bottom:20px;
+	overflow:auto;
+}
+#main-image img {
+	float:left;
+	max-width:100%;
+}
+
+
+/* forum topics
+----------------------------------------------- */
+.forum .topic {
+	font-size:1.3em;
+}
+
+
+/* full
+----------------------------------------------- */
+.full {padding:0}
+.full h2 {margin:0}
+
+
+/* accordion
+----------------------------------------------- */
+#accordion {
+	padding-bottom:10px;
+	overflow:auto;
+}
+
+
+/* section menu
+----------------------------------------------- */
+div.menu ul.section li a {
+	border-bottom:none;
+}
+div.menu ul.section ul li a {
+	border-bottom:1px solid #eee;
+}
+div.menu #section-menu ul.section li a {
+	border-bottom:1px solid #eee;
+}
+div.menu #section-menu ul.section ul li a {
+	border-bottom:1px solid #fff;
+}
+
+
+/* Calendar
+----------------------------------------------- */
+.box .calendar h3 {
+	padding:.3em 0 0 0;
+	font-weight:normal;
+	font-size:2em;
+	}
+.box .calendar table {
+	margin-top:8px;
+	}
+.box .calendar table td {
+	width:33px;
+	padding:0;
+	border:1px solid #ccc;
+	height:auto;
+	text-align:center;
+	}
+.box .calendar table td.prev-mo,
+.box .calendar table td.next-mo {
+	background:transparent;
+	}
+.box .calendar table td a {
+	display:block;
+	padding:.6em 0;
+	font-weight:normal;
+	font-size:1.2em;
+	}
+.box .calendar table td a:hover {
+	color:#fff;
+	background:#666;
+	}
+.box .calendar table td#today a {
+	color:#fff;
+	background:#333;
+	}
+.box .calendar table th {
+	padding:1px 0 0 0;
+	border:none;
+	background:transparent;
+	text-align:center;
+	}
+
+
+/* global search
+----------------------------------------------- */
+form.global.search {
+	padding:1em 0;
+}
+form.global.search p {
+	margin: 0;
+}
+
+
+/* margins on boxes
+----------------------------------------------- */
+.pre {
+	margin-left: 0;
+	margin-right: 5px;
+}
+.post {
+	margin-left: 5px;
+	margin-right: 0;
+}

@@ -1,0 +1,256 @@
+/*
+-----------------------------------------------
+Intranet - Themes - Default
+----------------------------------------------- */
+body {
+	background: #ccc7ba;
+	color: #333;
+}
+
+
+/* anchors
+----------------------------------------------- */
+a {
+	color: #8c2240;
+	font-weight:bold;
+	text-decoration: none;
+}
+a:hover {
+	color:#333;
+}
+
+
+/* header
+----------------------------------------------- */
+#branding h1 a {
+	color: #fff;
+}
+
+
+/*
+-----------------------------------------------
+
+BACKGROUND COLORS
+
+----------------------------------------------- */
+#header {
+	background:#8c2240;
+}
+#secondary-nav {
+	background:#001b32;
+}
+#branding {
+	background:transparent;
+}
+#main-nav {
+	background:transparent;
+}
+#site_info {
+	background:transparent;
+}
+
+
+/* main navigation
+----------------------------------------------- */
+#main-nav li a {
+	background:#7c1e39;
+}
+#main-nav li a:hover {
+	background:#66192f;
+}
+#main-nav li a:active {
+	background:#4a1222;
+}
+#main-nav li.current a,
+#main-nav li.current a:hover {
+	background:#fff;
+	color: #8c2240;
+}
+
+
+/* secondary navigation
+----------------------------------------------- */
+#secondary-nav,
+#secondary-nav ul li a {
+	background:#222;
+}
+#secondary-nav ul li:hover a,
+#secondary-nav ul li ul,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a {
+	background:#555;
+}
+#secondary-nav ul li a:focus,
+#secondary-nav ul li:hover a:active,
+#secondary-nav ul li ul li a,
+#secondary-nav ul li:hover ul li a:hover {
+	background:#444;
+}
+#secondary-nav ul li:hover ul li a:active {
+	background:#222;
+}
+
+
+/* page heading
+----------------------------------------------- */
+#page-heading {
+	color:#8C2240;
+}
+
+
+/* boxes
+----------------------------------------------- */
+.box h2 a,
+.box h2 a.visible {
+	color:#222;
+	background:#fff;
+}
+.box h2 a:hover {
+	background:#8c2240;
+	color:#fff;
+}
+.block {
+	background:#eee8d9;
+}
+
+
+/* footer
+----------------------------------------------- */
+#site_info .box {
+	background:#eee8d9;
+}
+
+
+/* jquery tabs - horizontal
+----------------------------------------------- */
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+	background:#ccc7ba;
+}
+.ui-state-default a,
+.ui-widget-content .ui-state-default a {
+	color:#555;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus {
+	background:#958f80;
+}
+.ui-state-hover a,
+.ui-state-hover a:hover {
+	color:#fff;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active {
+	background:#8c2240;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+	color:#fff;
+}
+
+
+/* jquery tabs - vertical
+----------------------------------------------- */
+.tabs .tablist,
+.tablist .ui-state-default a {
+	background:#ddd8c9;
+}
+.ui-tabs .tablist .ui-state-default a {
+	border-bottom:1px solid #ccc7ba;
+}
+.tablist .ui-state-hover a {
+	background: #958f80;
+}
+.tablist .ui-state-active a {
+	background: #fff;
+	color: #8c2240;
+}
+
+
+/* images
+----------------------------------------------- */
+#article a.image,
+.article a.image {
+	border-color: #ddd8c9;
+}
+#article a.image:hover,
+.article a.image:hover {
+	border-color: #8c2240;
+}
+#article p.meta,
+.article p.meta {
+	color:#666;
+	border-color: #ddd8c9;
+}
+
+
+/* forms
+----------------------------------------------- */
+fieldset {
+	background: #ddd8c9;
+	border-color: #ccc7ba;
+}
+fieldset legend {
+	border-color: #ccc7ba;
+}
+
+.box .article {
+	border-top:none;
+}
+
+
+/* calendar
+----------------------------------------------- */
+.calendar-menu li.current a {
+	border-bottom:3px solid #8c2240;
+	}
+.calendar td#today {
+	background:#f7f1e2;
+	}
+.calendar .holiday {
+	color:#597BC6;
+	}
+.calendar table tbody tr td#today span a,
+.calendar table tbody tr td#today:hover span a {
+	background:#8c2240;
+	color:#fff;
+	border-left:1px solid #8c2240;
+	border-bottom:1px solid #8c2240;
+	}
+.calendar table tbody tr td#today.current span a {
+	background:#66192f;
+	color:#fff;
+	border-left:1px solid #66192f;
+	border-bottom:1px solid #66192f;
+	}
+
+.calendar-year .calendar-month table tbody tr td.holiday span a {
+	background:#fc6;
+	}
+.calendar-year .calendar-month table tbody tr td.holiday:hover span a {
+	background:#fc6;
+	}
+.calendar-year .calendar-month table tbody tr td.current.holiday span a {
+	background:#390;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td#today span a {
+	background:#8c2240;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td#today.current span a {
+	background:#66192f;
+	color:#fff;
+	}
+
+
+.calendar-month .block {
+	background:#fbf8f1;
+	}
+.calendar-month table tbody tr td#today span a {
+	background:#597BC6;
+	color:#fff;
+	}

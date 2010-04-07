@@ -1,0 +1,344 @@
+/*
+-----------------------------------------------
+Calendar
+----------------------------------------------- */
+
+/* page layout
+----------------------------------------------- */
+.body {
+  padding-bottom:57px;
+	}
+.top {
+	clear:both;
+	margin-bottom:0;
+	text-align:right;
+	}
+hr {
+  clear:both;
+  border:none;
+  height:0;
+  }
+
+
+/* calendar
+----------------------------------------------- */
+.calendar a {
+	text-decoration:none;
+	}
+
+
+.calendar-head {
+  position:relative;
+	}
+.previous-month .calendar-head h3,
+.next-month .calendar-head h3 {
+	font-size:1.5em;
+	font-weight:normal;
+	}
+
+
+.calendar-head h2,
+.calendar-head h3 {
+	font-weight:normal;
+	margin-left:0.5em;
+	margin-right:0.5em;
+	}
+.calendar-overview {
+	position:relative;
+	}
+.calendar-overview .block {
+	padding:5px;
+	}
+.calendar-overview .calendar-head {
+	padding-bottom:1em;
+	margin-bottom:.5em;
+	border-bottom:1px solid #ccc;
+	}
+.calendar-overview .calendar-month .calendar-head {
+	padding-bottom:0;
+	border-bottom:none;
+	}
+
+
+.current-month {
+	position:relative;
+	}
+.calendar-menu {
+	position:absolute;
+	top:0.5em;
+	right:0;
+	padding-top:0.8em;
+	padding-bottom:0.8em;
+	padding-right:2em;
+	margin-bottom:0;
+	}
+.calendar-menu li {
+	display:inline;
+	margin-left:0;
+	}
+.calendar-menu li a {
+	float:left;
+	font-weight:normal;
+	margin-left:1em;
+	text-decoration:none;
+	}
+.calendar-menu li.current a {
+	font-weight:bold;
+	border-bottom:3px solid #999;
+	}
+.calendar-menu li a:hover {
+	float:left;
+	margin-left:1em;
+	}
+
+
+.calendar table {
+	border-collapse:collapse;
+	width:100%;
+	margin:0;
+	background: #fff;
+	}
+.calendar thead tr {
+	border-top:1px solid #ccc;
+	}
+.calendar th {
+	text-align:center;
+	padding:.5em 0;
+	}
+.calendar td {
+	width:14%;
+	padding-top:0;
+	height:8em;
+	vertical-align:top;
+	border-right:1px solid #ddd;
+	}
+.calendar td#today {
+	background:#f9f9f9;
+	}
+.calendar td.current {
+	background:#eee;
+	}
+.calendar tbody td {
+	border-top:1px solid #ccc;
+	}
+.calendar span a {
+	float:right;
+	font-weight:normal;
+	background:#fff;
+	padding:.1em .5em;
+	margin-left:.5em;
+	border-left:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	}
+.calendar .holiday {
+	color:#597BC6;
+	}
+.calendar td#today.current span a,
+.calendar td.current span a {
+	background:#444;
+	color:#fff;
+	font-weight:bold;
+	border-left:1px solid #444;
+	border-bottom:1px solid #444;
+	}
+.calendar td.previous-month-day span a,
+.calendar td.next-month-day span a {
+	color:#ccc;
+	background:transparent;
+	border:0;
+	}
+.calendar td.previous-month-day:hover span a,
+.calendar td.next-month-day:hover span a {
+	background:#ccc;
+	border:0;
+	}
+.calendar td.previous-month-day span a:hover,
+.calendar td.next-month-day span a:hover {
+	background:#999;
+	border:0;
+	}
+.calendar td p {
+	margin:.5em .5em .5em .8em;
+	}
+.calendar table tbody tr:hover td,
+.calendar table tbody tr:hover td.current {
+	background:#f6f6f6;
+	}
+.calendar table tbody tr td:hover,
+.calendar table tbody tr td.current:hover {
+	background:#eee;
+	}
+.calendar table tbody tr td:hover span a {
+	background:#666;
+	color:#fff;
+	border-left:1px solid #666;
+	border-bottom:1px solid #666;
+	}
+.calendar table tbody tr td#today span a,
+.calendar table tbody tr td#today:hover span a {
+	background:#888;
+	color:#fff;
+	border-left:1px solid #888;
+	border-bottom:1px solid #888;
+	}
+.calendar table tbody tr td#today.current span a {
+	background:#666;
+	color:#fff;
+	border-left:1px solid #666;
+	border-bottom:1px solid #666;
+	}
+.calendar table tbody tr td span a:hover,
+.calendar table tbody tr td span a:hover {
+	background:#333;
+	border-left:1px solid #333;
+	border-bottom:1px solid #333;
+	}
+
+.previous-month h3,
+.next-month h3 {
+	font-size:1.4em;
+	text-transform:none;
+	letter-spacing:0;
+	padding:0 0 1em 0;
+	margin-bottom:0;
+	border:0;
+	}
+.previous-month table,
+.next-month table {
+	margin-top:0;
+	}
+.previous-month table td,
+.next-month table td {
+	height:5em;
+	}
+
+
+.calendar-year a {
+	text-decoration:none;
+	}
+.calendar-year .calendar-month table tbody tr td span a:hover {
+	background:#ccc;
+	color:#000;
+	}
+.calendar-year .calendar-month table tbody tr td span a:active {
+	background:#000;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td.holiday span a {
+	background:#eee;
+	color:#000;
+	}
+.calendar-year .calendar-month table tbody tr td.holiday:hover span a {
+	background:#eee;
+	color:#000;
+	}
+.calendar-year .calendar-month table tbody tr td.current span a {
+	background:#444;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td.current:hover span a {
+	background:#000;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td.current.holiday span a {
+	background:#333;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td#today span a {
+	background:#888;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td#today.current span a {
+	background:#666;
+	color:#fff;
+	}
+.calendar-year .calendar-month table tbody tr td#today:hover span a {
+	background:#000;
+	color:#fff;
+	}
+
+
+.calendar-month .block {
+	min-height:14em;
+	background:#eee;
+	padding:10px;
+	}
+.calendar-month h3 {
+	font-size:1.5em;
+	margin-bottom:.5em;
+	}
+.calendar-month table {
+	width:100%;
+	border-collapse:collapse;
+	margin-bottom:0;
+	}
+.calendar-month table th {
+	font-weight:normal;
+	}
+.calendar-month table td {
+	width:14%;
+	text-align:center;
+	}
+.calendar-month table td a {
+	display:block;
+	line-height:2em;
+	padding:0;
+	}
+.calendar-month table tbody tr:hover td {
+	background:#eee;
+	}
+.calendar-month table tbody tr td:hover {
+	background:#fff;
+	}
+.calendar-month table tbody tr td:hover span a {
+	background:#333;
+	color:#fff;
+	}
+.calendar-month table tbody tr td:hover span a:active {
+	background:#000;
+	}
+.calendar-month table tbody tr td#today span a {
+	background:#666;
+	color:#fff;
+	}
+.calendar-month table tbody tr td#today:hover span a {
+	background:#000;
+	color:#fff;
+	}
+
+
+.calendar-week {
+	position:relative;
+	}
+.calendar-week table tbody tr.hour-row td {
+	height:2em;
+	}
+.calendar-week table tbody tr td {
+	width:13%;
+	}
+.calendar-week table tbody tr td.hour {
+	width:9%;
+	text-align:right;
+	height:2em;
+	padding:.6em 1em .3em 0;
+	}
+
+
+.calendar-day {
+	position:relative;
+	}
+.calendar-day table tbody tr th {
+	text-align:left;
+	}
+.calendar-day table tbody tr td {
+	height:2em;
+	padding:.6em 1em .3em 0;
+	width:90%;
+	}
+.calendar-day table tbody tr td.hour {
+	width:10%;
+	text-align:right;
+	}
+.calendar.calendar-day tr th.holiday {
+	text-align:left;
+	}
