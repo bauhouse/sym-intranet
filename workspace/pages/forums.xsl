@@ -11,6 +11,14 @@
 	encoding="UTF-8"
 	indent="yes" />
 
+<xsl:param name="level">
+    <xsl:choose>
+		<xsl:when test="$topic">2</xsl:when>
+		<xsl:when test="$parent-path = '/'">1</xsl:when>
+        <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+</xsl:param>
+
 <xsl:template match="data">
 	<div class="line">
 		<div class="unit size2of3">

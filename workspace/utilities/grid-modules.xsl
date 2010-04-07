@@ -9,7 +9,7 @@
 </xsl:template>
 
 <xsl:template name="grid-css">
-	<xsl:param name="css-path" select="concat($workspace, '/intranet/css/')"/>
+	<xsl:param name="css-path" select="concat($workspace-rel, '/intranet/css/')"/>
 	<link rel="stylesheet" type="text/css" href="{$css-path}reset.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="{$css-path}text.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="{$css-path}grids.css" media="all" />
@@ -24,15 +24,15 @@
 		</xsl:otherwise>
 	</xsl:choose>
 	<link rel="stylesheet" type="text/css" href="{$css-path}layout.css" media="all" />
-	<link rel="stylesheet" type="text/css" href="{$css-path}/themes/minimalist.css" title="styles1" media="all" />
-	<link rel="alternate stylesheet" type="text/css" href="{$css-path}/themes/blue.css" title="styles2" media="all" />
-	<link rel="alternate stylesheet" type="text/css" href="{$css-path}/themes/grey.css" title="styles3" media="all" />
-	<link rel="alternate stylesheet" type="text/css" href="{$css-path}/themes/maroon.css" title="styles4" media="all" />
-	<link rel="alternate stylesheet" type="text/css" href="{$css-path}/themes/minimal_buttons.css" title="styles5" media="all" />
+	<link rel="stylesheet" type="text/css" href="{$css-path}themes/minimalist.css" title="styles1" media="all" />
+	<link rel="alternate stylesheet" type="text/css" href="{$css-path}themes/blue.css" title="styles2" media="all" />
+	<link rel="alternate stylesheet" type="text/css" href="{$css-path}themes/grey.css" title="styles3" media="all" />
+	<link rel="alternate stylesheet" type="text/css" href="{$css-path}themes/maroon.css" title="styles4" media="all" />
+	<link rel="alternate stylesheet" type="text/css" href="{$css-path}themes/minimal_buttons.css" title="styles5" media="all" />
 </xsl:template>
 
 <xsl:template name="grid-calendar-css">
-	<xsl:param name="css-path" select="concat($workspace, '/intranet/css/')"/>
+	<xsl:param name="css-path" select="concat($workspace-rel, '/intranet/css/')"/>
 	<link rel="stylesheet" type="text/css" href="{$css-path}reset.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="{$css-path}text.css" media="all" />
 	<link rel="stylesheet" type="text/css" href="{$css-path}grids.css" media="all" />
@@ -42,20 +42,20 @@
 </xsl:template>
 
 <xsl:template name="grid-ie-css">
-	<xsl:param name="css-path" select="concat($workspace, '/intranet/css/')"/>
+	<xsl:param name="css-path" select="concat($workspace-rel, '/intranet/css/')"/>
 	<xsl:comment><![CDATA[[if IE 6]><link rel="stylesheet" type="text/css" href="]]><xsl:value-of select="$css-path"/><![CDATA[ie6.css" media="screen" /><![endif]]]></xsl:comment>
 	<xsl:comment><![CDATA[[if gte IE 7]><link rel="stylesheet" type="text/css" href="]]><xsl:value-of select="$css-path"/><![CDATA[ie.css" media="screen" /><![endif]]]></xsl:comment>
 </xsl:template>
 
 <xsl:template name="grid-mootools">
-	<xsl:param name="js-path" select="concat($workspace, '/intranet/js/')"/>
+	<xsl:param name="js-path" select="concat($workspace-rel, '/intranet/js/')"/>
 	<script type="text/javascript" src="{$js-path}mootools-1.2.1-core.js"></script>
 	<script type="text/javascript" src="{$js-path}mootools-1.2-more.js"></script>
 	<script type="text/javascript" src="{$js-path}mootools-fluid16-autoselect.js"></script>
 </xsl:template>
 
 <xsl:template name="grid-jquery">
-	<xsl:param name="js-path" select="concat($workspace, '/intranet/js/')"/>
+	<xsl:param name="js-path" select="concat($workspace-rel, '/intranet/js/')"/>
 	<script type="text/javascript" src="{$js-path}jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="{$js-path}jquery-ui-1.7.1.custom.min.js"></script>
 	<script type="text/javascript" src="{$js-path}jquery-fluid.js"></script>
@@ -64,13 +64,13 @@
 
 <xsl:template name="grid-branding">
 	<div id="branding">
-		<h1><a href="{$root}/">The Hub</a></h1>
+		<h1><a href="{$root-rel}/">Site Name</a></h1>
 	</div>
 </xsl:template>
 
 <xsl:template name="grid-branding-search">
 	<div id="branding">
-		<h1><a href="{$root}/">The Hub</a></h1>
+		<h1><a href="{$root-rel}/">Site Name</a></h1>
 		<form method="get" action="" class="search">
 			<p>
 				<input class="search text" name="value" type="search"/>
@@ -83,7 +83,7 @@
 
 <xsl:template name="grid-branding-fluid960gs">
 	<h1 id="branding">
-		<a href="{$root}/fluid960gs/">The Fluid 960 Grid System</a>
+		<a href="{$root-rel}/fluid960gs/">The Fluid 960 Grid System</a>
 	</h1>
 </xsl:template>
 
@@ -91,10 +91,10 @@
 	<xsl:param name="page-root">
 		<xsl:choose>
 			<xsl:when test="$current-page = 'home'">
-				<xsl:value-of select="$root"/>
+				<xsl:value-of select="$root-rel"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat($root, '/', $current-page)"/>
+				<xsl:value-of select="concat($root-rel, '/', $current-page)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:param>
@@ -275,7 +275,7 @@
 	<div class="box">
 		<h2>
 			<a href="#" id="toggle-ajax" class="hidden">
-				<img src="{$workspace}/intranet/img/ajax-loader.gif" id="loading" alt="Loading" />
+				<img src="{$workspace-rel}/intranet/img/ajax-loader.gif" id="loading" alt="Loading" />
 				Ajax Content
 			</a>
 		</h2>
@@ -845,7 +845,7 @@
 			<ol>
 				<li class="comment" id="comment-1">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -860,7 +860,7 @@
 				</li>
 				<li class="comment" id="comment-2">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -874,7 +874,7 @@
 				</li>
 				<li class="comment" id="comment-3">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -888,7 +888,7 @@
 				</li>
 				<li class="comment" id="comment-4">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -903,7 +903,7 @@
 				</li>
 				<li class="comment" id="comment-5">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -917,7 +917,7 @@
 				</li>
 				<li class="comment" id="comment-6">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -931,7 +931,7 @@
 				</li>
 				<li class="comment" id="comment-256">
 					<div class="comment-meta">
-						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
+						<a href="http://www.domain7.com/" class="avatar"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="30" height="30" alt="photo"/></a>
 						<ul>
 							<li class="author"><cite><a href="{$profile-link}">Stephen Bau</a></cite></li>
 							<li class="date">Fri 27 Mar 2009</li>
@@ -1017,37 +1017,37 @@
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 1</a></td>
 							<td>25</td>
 							<td>Today</td>
-							<td><a href="{$root}/people/">Michael Scott</a></td>
+							<td><a href="{$root-rel}/people/">Michael Scott</a></td>
 						</tr>	
 						<tr>
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 2</a></td>
 							<td>25</td>
 							<td>Today</td>
-							<td><a href="{$root}/people/">Dwight Schrute</a></td>
+							<td><a href="{$root-rel}/people/">Dwight Schrute</a></td>
 						</tr>	
 						<tr>
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 3</a></td>
 							<td>25</td>
 							<td>Today</td>
-							<td><a href="{$root}/people/">Jim Halpert</a></td>
+							<td><a href="{$root-rel}/people/">Jim Halpert</a></td>
 						</tr>
 						<tr>
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 4</a></td>
 							<td>12</td>
 							<td>12 Weeks</td>
-							<td><a href="{$root}/people/">Kelly Kapoor</a></td>
+							<td><a href="{$root-rel}/people/">Kelly Kapoor</a></td>
 						</tr>	
 						<tr>
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 5</a></td>
 							<td>12</td>
 							<td>Yesterday</td>
-							<td><a href="{$root}/people/">Pam Beesly</a></td>
+							<td><a href="{$root-rel}/people/">Pam Beesly</a></td>
 						</tr>	
 						<tr>
 							<td class="topic"><a href="{$topic-link}">Forum Topic Number 6</a></td>
 							<td>25</td>
 							<td>Today</td>
-							<td><a href="{$root}/people/">Angela Martin</a></td>
+							<td><a href="{$root-rel}/people/">Angela Martin</a></td>
 						</tr>	
 					</tbody>
 				</table>
@@ -1065,17 +1065,17 @@
 		</h2>
 		<div class="block" id="{$articles-handle}">
 			<div class="first article">
-				<h3><a href="{$root}/news/article/">Article Heading</a></h3>
+				<h3><a href="{$root-rel}/news/article/">Article Heading</a></h3>
 				<h4>Subheading</h4>
 				<p class="meta">Vancouver, BC &#8212; Wednesday, 23 April 2008</p>
-				<a href="{$root}/news/article/" class="image"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
+				<a href="{$root-rel}/news/article/" class="image"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
 				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>
 			</div>
 			<div class="article">
-				<h3><a href="{$root}/news/article/">Article Heading</a></h3>
+				<h3><a href="{$root-rel}/news/article/">Article Heading</a></h3>
 				<h4>Subheading</h4>
 				<p class="meta">Vancouver, BC &#8212; Wednesday, 23 April 2008</p>
-				<a href="{$root}/news/article/" class="image"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
+				<a href="{$root-rel}/news/article/" class="image"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
 				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>
 			</div>
 			<div class="article">
@@ -1084,7 +1084,7 @@
 				<h3>Heading 3</h3>
 				<h4>Heading 4</h4>
 				<p class="meta">Vancouver, BC &#8212; Wednesday, 23 April 2008</p>
-				<a href="{$root}/news/article/" class="image"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
+				<a href="{$root-rel}/news/article/" class="image"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
 				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>
 				<h5>Heading 5</h5>
 				<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
@@ -1103,7 +1103,7 @@
 		<div class="block" id="article">
 			<h2 class="first">Heading 2</h2>
 			<p class="meta">Vancouver, BC &#8212; Wednesday, 23 April 2008</p>
-			<a href="#" class="image"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
+			<a href="#" class="image"><img src="{$workspace-rel}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. <a href="#">Visit site.</a></p>
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod. </p>
 			<h5>A menu</h5>
@@ -1291,11 +1291,11 @@
 <xsl:template name="grid-site-info-fluid960gs">
 	<div class="box">
 		<p>Fluid 960 Grid System, created by <a href="http://www.domain7.com/WhoWeAre/StephenBau.html">Stephen Bau</a>, based on the <a href="http://960.gs/">960 Grid System</a> by <a href="http://sonspring.com/journal/960-grid-system">Nathan Smith</a>. Released under the 
-		<a href="{$workspace}/licenses/GPL_license.txt">GPL</a>
+		<a href="{$workspace-rel}/licenses/GPL_license.txt">GPL</a>
 		<xsl:text> / </xsl:text>
-		<a href="{$workspace}/licenses/MIT_license.txt">MIT</a> 
+		<a href="{$workspace-rel}/licenses/MIT_license.txt">MIT</a> 
 		<xsl:text> </xsl:text>
-		<a href="{$root}/README">Licenses</a>.</p>
+		<a href="{$root-rel}/README">Licenses</a>.</p>
 	</div>
 </xsl:template>
 

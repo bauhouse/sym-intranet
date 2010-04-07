@@ -12,8 +12,19 @@
 	encoding="UTF-8"
 	indent="yes" />
 
-<xsl:param name="parent-root" select="concat($root,'/',$parent-path)"/>
-<xsl:param name="current-root" select="concat($root,'/',$parent-path,'/',$current-page)"/>
+<xsl:param name="level">
+    <xsl:choose>
+		<xsl:when test="$day">5</xsl:when>
+		<xsl:when test="$month">4</xsl:when>
+		<xsl:when test="$year">3</xsl:when>
+		<xsl:when test="$current-page = 'week'">2</xsl:when>
+		<xsl:when test="$parent-path = '/'">1</xsl:when>
+        <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+</xsl:param>
+<xsl:param name="parent-root" select="concat($root-rel,$parent-path)"/>
+<xsl:param name="current-root" select="concat($root-rel,$parent-path,'/',$current-page)"/>
+
 
 <xsl:template match="data">	 
 	<xsl:param name="is-today">

@@ -12,6 +12,26 @@
 	encoding="UTF-8"
 	indent="yes" />
 
+<xsl:param name="level">
+    <xsl:choose>
+		<xsl:when test="$current-page = 'dashboard'">0</xsl:when>
+		<xsl:when test="$parent-path = '/'">1</xsl:when>
+        <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+</xsl:param>
+<xsl:param name="root-rel">
+    <xsl:choose>
+        <xsl:when test="$level = 0">.</xsl:when>
+        <xsl:when test="$level = 1">..</xsl:when>
+        <xsl:when test="$level = 2">../..</xsl:when>
+        <xsl:when test="$level = 3">../../..</xsl:when>
+        <xsl:when test="$level = 4">../../../..</xsl:when>
+        <xsl:when test="$level = 5">../../../../..</xsl:when>
+        <xsl:when test="$level = 6">../../../../../..</xsl:when>
+    </xsl:choose>
+</xsl:param>
+<xsl:param name="workspace-rel" select="concat($root-rel,'/workspace')"/>
+
 <xsl:template match="/">
 	<xsl:param name="js" select="'jquery'"/>
 	<xsl:param name="css" select="'fluid'"/>
@@ -34,7 +54,7 @@
 						</div>
 						<div id="branding">
 							<div class="group">
-								<h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
+								<h1><a href="{$root-rel}/"><xsl:value-of select="$website-name"/></a></h1>
 							</div>
 						</div>
 						<div id="main-nav">
@@ -64,7 +84,7 @@
 					<div class="group container mod">
 						<div class="mod">
 							<div class="box">
-								<p>&#169; Copyright <xsl:value-of select="$this-year"/><xsl:text> </xsl:text><a href="http://www.example.com/">Site Name</a>. All rights reserved.</p>
+								<p>&#169; Copyright <xsl:value-of select="$this-year"/><xsl:text> </xsl:text><a href="{$root-rel}/">Site Name</a>. All rights reserved.</p>
 							</div>
 						</div>
 					</div>
