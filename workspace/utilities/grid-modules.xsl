@@ -64,13 +64,13 @@
 
 <xsl:template name="grid-branding">
 	<div id="branding">
-		<h1><a href="{$root}/">The Hub</a></h1>
+		<h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
 	</div>
 </xsl:template>
 
 <xsl:template name="grid-branding-search">
 	<div id="branding">
-		<h1><a href="{$root}/">The Hub</a></h1>
+		<h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
 		<form method="get" action="" class="search">
 			<p>
 				<input class="search text" name="value" type="search"/>
