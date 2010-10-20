@@ -75,8 +75,8 @@
 			
 			$options = array(
 				array(NULL, false, __('With Selected...')),
-				array('delete', false, __('Delete')),
-				array('delete-entries', false, __('Delete Entries'))
+				array('delete', false, __('Delete'), 'confirm'),
+				array('delete-entries', false, __('Delete Entries'), 'confirm')
 			);
 
 			$tableActions->appendChild(Widget::Select('with-selected', $options));
@@ -119,7 +119,7 @@
 			$div = new XMLElement('div', NULL, array('class' => 'group'));
 			$namediv = new XMLElement('div', NULL);
 			
-			$label = Widget::Label('Name');
+			$label = Widget::Label(__('Name'));
 			$label->appendChild(Widget::Input('meta[name]', $meta['name']));
 			
 			if(isset($this->_errors['name'])) $namediv->appendChild(Widget::wrapFormElementWithError($label, $this->_errors['name']));
@@ -127,14 +127,14 @@
 			
 			$label = Widget::Label();
 			$input = Widget::Input('meta[hidden]', 'yes', 'checkbox', ($meta['hidden'] == 'yes' ? array('checked' => 'checked') : NULL));
-			$label->setValue(__('%s Hide this section from the Publish menu', array($input->generate(false))));
+			$label->setValue(__('%s Hide this section from the back-end menu', array($input->generate(false))));
 			$namediv->appendChild($label);
 			$div->appendChild($namediv);
 			
 			$navgroupdiv = new XMLElement('div', NULL);
 			$sectionManager = new SectionManager($this->_Parent);
 			$sections = $sectionManager->fetch(NULL, 'ASC', 'sortorder');
-			$label = Widget::Label('Navigation Group <i>Created if does not exist</i>');
+			$label = Widget::Label(__('Navigation Group') . ' <i>' . __('Created if does not exist') . '</i>');
 			$label->appendChild(Widget::Input('meta[navigation_group]', $meta['navigation_group']));
 
 			if(isset($this->_errors['navigation_group'])) $navgroupdiv->appendChild(Widget::wrapFormElementWithError($label, $this->_errors['navigation_group']));
@@ -322,7 +322,7 @@
 			$navgroupdiv = new XMLElement('div', NULL);
 			$sectionManager = new SectionManager($this->_Parent);
 			$sections = $sectionManager->fetch(NULL, 'ASC', 'sortorder');
-			$label = Widget::Label('Navigation Group <i>Choose only one. Created if does not exist</i>');
+			$label = Widget::Label(__('Navigation Group') . ' <i>' . __('Choose only one. Created if does not exist') . '</i>');
 			$label->appendChild(Widget::Input('meta[navigation_group]', $meta['navigation_group']));
 
 			if(isset($this->_errors['navigation_group'])) $navgroupdiv->appendChild(Widget::wrapFormElementWithError($label, $this->_errors['navigation_group']));
@@ -462,7 +462,7 @@
 				}
 
 				## Check for duplicate section handle
-				elseif(Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_sections` WHERE `name` = '" . $meta['name'] . "' LIMIT 1")){
+				elseif(Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_sections` WHERE `name` = '" . Symphony::Database()->cleanValue($meta['name']) . "' LIMIT 1")){
 					$this->_errors['name'] = __('A Section with the name <code>%s</code> name already exists', array($meta['name']));
 					$canProceed = false;
 				}
@@ -600,7 +600,10 @@
 				}
 
 				## Check for duplicate section handle
-				elseif($meta['name'] != $existing_section->get('name') && Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_sections` WHERE `name` = '" . $meta['name'] . " AND `id` != ' . $section_id . ' LIMIT 1")){
+				elseif(
+					$meta['name'] != $existing_section->get('name') 
+					&& Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_sections` WHERE `name` = '" . Symphony::Database()->cleanValue($meta['name']) . "' AND `id` != {$section_id} LIMIT 1")
+				){
 					$this->_errors['name'] = __('A Section with the name <code>%s</code> name already exists', array($meta['name']));
 					$canProceed = false;
 				}

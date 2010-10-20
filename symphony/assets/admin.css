@@ -49,6 +49,7 @@ h1 a:hover,
 	margin: 0 -19px 0 19px;
 	padding: 15px 1em;
 	height: 0;
+	cursor:pointer;
 }
 #nav > li:hover,
 #nav > li.active {
@@ -100,6 +101,14 @@ h1 a:hover,
 }
 
 /* User */
+p#version {
+	position:absolute;
+	bottom:1.75em;
+	left:1.75em;
+	color:#a5a5a0;
+	z-index:2;
+	margin:0;
+}
 #usr {
 	position: absolute;
 	bottom: 0;

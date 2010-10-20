@@ -80,10 +80,16 @@
 				
 				$about = $existing->about();
 				$fields['name'] = $about['name'];
-				$fields['order'] = $existing->dsParamORDER;
+				
+				$fields['order'] = ($existing->dsParamORDER == 'rand' ? 'random' : $existing->dsParamORDER);
 				$fields['param'] = $existing->dsParamPARAMOUTPUT;
-				$fields['required_url_param'] = $existing->dsParamREQUIREDPARAM;
-				$fields['xml_elements'] = $existing->dsParamINCLUDEDELEMENTS;
+				$fields['required_url_param'] = trim($existing->dsParamREQUIREDPARAM);
+				
+				$fields['xml_elements'] = array();
+				if(isset($existing->dsParamINCLUDEDELEMENTS) && is_array($existing->dsParamINCLUDEDELEMENTS)){
+					$fields['xml_elements'] = $existing->dsParamINCLUDEDELEMENTS;
+				}
+				
 				$fields['sort'] = $existing->dsParamSORT;
 				$fields['page_number'] = $existing->dsParamSTARTPAGE;
 				$fields['limit_type'] = $existing->dsParamLIMITTYPE;
@@ -172,20 +178,22 @@
 			
 		    $sections = $sectionManager->fetch(NULL, 'ASC', 'name');
 			
-			foreach($sections as $section) $field_groups[$section->get('id')] = array('fields' => $section->fetchFields(), 'section' => $section);
+			if (!is_array($sections)) $sections = array();
+			$field_groups = array();
+			
+			foreach($sections as $section){
+				$field_groups[$section->get('id')] = array('fields' => $section->fetchFields(), 'section' => $section);
+			}
 			
 			$options = array(
-								
 				array('label' => __('System'), 'options' => array(
-							array(__('authors'), ($fields['source'] == __('authors')), __('Authors')),
-							array(__('navigation'), ($fields['source'] == __('navigation')), __('Navigation')),
-					)),
-							
-				array('label' => __('Custom XML'), 'options' => array(			
-							array(__('dynamic_xml'), ($fields['source'] == __('dynamic_xml')), __('Dynamic XML')),	
-							array(__('static_xml'), ($fields['source'] == __('static_xml')), __('Static XML')),
-					)),
-				
+						array('authors', ($fields['source'] == 'authors'), __('Authors')),
+						array('navigation', ($fields['source'] == 'navigation'), __('Navigation')),
+				)),
+				array('label' => __('Custom XML'), 'options' => array(
+						array('dynamic_xml', ($fields['source'] == 'dynamic_xml'), __('Dynamic XML')),
+						array('static_xml', ($fields['source'] == 'static_xml'), __('Static XML')),
+				)),
 			);
 			
 			if(is_array($sections) && !empty($sections)){
@@ -200,7 +208,7 @@
 			$this->Form->appendChild($fieldset);
 			
 			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'settings contextual ' . __('sections') . ' ' . __('authors') . ' ' . __('navigation') . ' ' . __('Sections') . ' ' . __('System'));
+			$fieldset->setAttribute('class', 'settings contextual sections authors navigation ' . __('Sections') . ' ' . __('System'));
 			$fieldset->appendChild(new XMLElement('legend', __('Filter Results')));
 			$p = new XMLElement('p', __('Use <code>{$param}</code> syntax to filter by page parameters.'));
 			$p->setAttribute('class', 'help');
@@ -215,7 +223,7 @@
 				$div->appendChild($h3);
 				
 				$ol = new XMLElement('ol');
-				$ol->setAttribute('id', 'filters-duplicator');
+				$ol->setAttribute('class', 'filters-duplicator');
 
 				if(isset($fields['filter'][$section_data['section']->get('id')]['id'])){
 					$li = new XMLElement('li');
@@ -262,13 +270,13 @@
 			}
 			
 			$div = new XMLElement('div');
-			$div->setAttribute('class', 'contextual ' . __('authors'));
+			$div->setAttribute('class', 'contextual authors');
 			$h3 = new XMLElement('h3', __('Filter Authors by'));
 			$h3->setAttribute('class', 'label');
 			$div->appendChild($h3);
 			
 			$ol = new XMLElement('ol');
-			$ol->setAttribute('id', 'filters-duplicator');
+			$ol->setAttribute('class', 'filters-duplicator');
 			
 			$this->__appendAuthorFilter($ol, __('ID'), 'id', $fields['filter']['author']['id'], (!isset($fields['filter']['author']['id'])));	
 			$this->__appendAuthorFilter($ol, __('Username'), 'username', $fields['filter']['author']['username'], (!isset($fields['filter']['author']['username'])));
@@ -283,13 +291,13 @@
 
 
 			$div = new XMLElement('div');
-			$div->setAttribute('class', 'contextual ' . __('navigation'));
+			$div->setAttribute('class', 'contextual navigation');
 			$h3 = new XMLElement('h3', __('Filter Navigation by'));
 			$h3->setAttribute('class', 'label');
 			$div->appendChild($h3);
 			
 			$ol = new XMLElement('ol');
-			$ol->setAttribute('id', 'filters-duplicator');
+			$ol->setAttribute('class', 'filters-duplicator');
 
 			$pages = Symphony::Database()->fetch("SELECT * FROM `tbl_pages` ORDER BY `title` ASC");
 				
@@ -351,15 +359,15 @@
 
 
 			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'settings contextual inverse ' . __('static_xml') . ' ' . __('dynamic_xml'));
+			$fieldset->setAttribute('class', 'settings contextual inverse static_xml dynamic_xml');
 			$fieldset->appendChild(new XMLElement('legend', __('Sorting and Limiting')));
 			
 			$p = new XMLElement('p', __('Use <code>{$param}</code> syntax to limit by page parameters.'));
-			$p->setAttribute('class', 'help contextual inverse ' . __('navigation'));
+			$p->setAttribute('class', 'help contextual inverse navigation');
 			$fieldset->appendChild($p);				
 			
 			$div = new XMLElement('div');
-			$div->setAttribute('class', 'group contextual ' . __('sections') . ' ' . __('Sections'));
+			$div->setAttribute('class', 'group contextual sections ' . __('Sections'));
 			
 			$label = Widget::Label(__('Sort By'));
 			
@@ -411,8 +419,13 @@
 			$options = array(
 				array('asc', ('asc' == $fields['order']), __('ascending')),
 				array('desc', ('desc' == $fields['order']), __('descending')),
-				array('rand', ('rand' == $fields['order']), __('random')),
+				array('random', ('random' == $fields['order']), __('random')),
 			);
+			
+			// Retain custom sort order
+			if(!in_array($fields['order'], array('asc', 'desc', 'random'))){
+				$options[] = array($fields['order'], true, $fields['order']);
+			}
 			
 			$label->appendChild(Widget::Select('fields[order]', $options));
 			$div->appendChild($label);
@@ -420,11 +433,11 @@
 			$fieldset->appendChild($div);
 				
 			$div = new XMLElement('div');
-			$div->setAttribute('class', 'group contextual inverse ' . __('navigation'));
+			$div->setAttribute('class', 'group contextual inverse navigation');
 
 			$label = Widget::Label();
 			$input = Widget::Input('fields[max_records]', $fields['max_records'], NULL, array('size' => '6'));
-			$label->setValue(__('Show a maximum of %s results', array($input->generate(false))));
+			$label->setValue(__('Show a maximum of %s results per page', array($input->generate(false))));
 			if(isset($this->_errors['max_records'])) $div->appendChild(Widget::wrapFormElementWithError($label, $this->_errors['max_records']));
 			else $div->appendChild($label);
 			
@@ -437,7 +450,7 @@
 			$fieldset->appendChild($div);
 			
 			$label = Widget::Label(__('Required URL Parameter <i>Optional</i>'));
-			$label->appendChild(Widget::Input('fields[required_url_param]', $fields['required_url_param']));
+			$label->appendChild(Widget::Input('fields[required_url_param]', trim($fields['required_url_param'])));
 			$fieldset->appendChild($label);
 			
 			$p = new XMLElement('p', __('An empty result will be returned when this parameter does not have a value. Do not wrap the parameter with curly-braces.'));
@@ -452,7 +465,7 @@
 			$this->Form->appendChild($fieldset);			
 		
 			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'settings contextual inverse ' .__('navigation') . ' ' . __('static_xml') . ' ' . __('dynamic_xml'));
+			$fieldset->setAttribute('class', 'settings contextual inverse navigation static_xml dynamic_xml');
 			$fieldset->appendChild(new XMLElement('legend', __('Output Options')));
 	
 			$ul = new XMLElement('ul');
@@ -565,15 +578,18 @@
 					foreach($section_data['fields'] as $input){
 						$elements = $input->fetchIncludableElements();
 					
-						foreach($elements as $name){
-							$selected = false;
+						if(is_array($elements) && !empty($elements)){
+							foreach($elements as $name){
+								$selected = false;
 						
-							if($fields['source'] == $section_data['section']->get('id') && @in_array($name, $fields['xml_elements'])){
-								$selected = true;	
+								if($fields['source'] == $section_data['section']->get('id') && @in_array($name, $fields['xml_elements'])){
+									$selected = true;	
+								}
+						
+								$optgroup['options'][] = array($name, $selected, $name);
 							}
-						
-							$optgroup['options'][] = array($name, $selected, $name);
 						}
+						
 					}
 				}
 				
@@ -584,13 +600,13 @@
 			$li->appendChild($label);
 			
 			$label = Widget::Label();
-			$label->setAttribute('class', 'contextual inverse ' . __('authors'));			
+			$label->setAttribute('class', 'contextual inverse authors');			
 			$input = Widget::Input('fields[associated_entry_counts]', 'yes', 'checkbox', ((isset($fields['associated_entry_counts']) && $fields['associated_entry_counts'] == 'yes') ? array('checked' => 'checked') : NULL));
 			$label->setValue(__('%s Include a count of entries in associated sections', array($input->generate(false))));
 			$li->appendChild($label);
 			
 			$label = Widget::Label();
-			$label->setAttribute('class', 'contextual inverse ' . __('authors'));
+			$label->setAttribute('class', 'contextual inverse authors');
 			$input = Widget::Input('fields[html_encode]', 'yes', 'checkbox', (isset($fields['html_encode']) ? array('checked' => 'checked') : NULL));
 			$label->setValue(__('%s HTML-encode text', array($input->generate(false))));
 			$li->appendChild($label);
@@ -601,7 +617,7 @@
 			$this->Form->appendChild($fieldset);
 
 			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'settings contextual ' . __('dynamic_xml'));
+			$fieldset->setAttribute('class', 'settings contextual dynamic_xml');
 			$fieldset->appendChild(new XMLElement('legend', __('Dynamic XML')));	
 			$label = Widget::Label(__('URL'));
 			$label->appendChild(Widget::Input('fields[dynamic_xml][url]', General::sanitize($fields['dynamic_xml']['url'])));
@@ -618,7 +634,7 @@
 			$div->appendChild($h3);
 			
 			$ol = new XMLElement('ol');
-			$ol->setAttribute('id', 'filters-duplicator');
+			$ol->setAttribute('class', 'filters-duplicator');
 			
 			if(is_array($fields['dynamic_xml']['namespace']['name'])){
 				
@@ -678,7 +694,7 @@
 		
 			$label = Widget::Label();
 			$input = Widget::Input('fields[dynamic_xml][cache]', max(1, intval($fields['dynamic_xml']['cache'])), NULL, array('size' => '6'));
-			$label->setValue('Update cached result every ' . $input->generate(false) . ' minutes');
+			$label->setValue(__('Update cached result every %s minutes', array($input->generate(false))));
 			if(isset($this->_errors['dynamic_xml']['cache'])) $fieldset->appendChild(Widget::wrapFormElementWithError($label, $this->_errors['dynamic_xml']['cache']));
 			else $fieldset->appendChild($label);		
 
@@ -690,7 +706,7 @@
 			$this->Form->appendChild($fieldset);
 						
 			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'settings contextual ' . __('static_xml'));
+			$fieldset->setAttribute('class', 'settings contextual static_xml');
 			$fieldset->appendChild(new XMLElement('legend', __('Static XML')));	
 			$label = Widget::Label(__('Body'));
 			$label->appendChild(Widget::Textarea('fields[static_xml]', 12, 50, General::sanitize($fields['static_xml']), array('class' => 'code')));
@@ -706,7 +722,7 @@
 			$div->appendChild(Widget::Input('action[save]', ($isEditing ? __('Save Changes') : __('Create Data Source')), 'submit', array('accesskey' => 's')));
 			
 			if($isEditing){
-				$button = new XMLElement('button', 'Delete');
+				$button = new XMLElement('button', __('Delete'));
 				$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this data source'), 'type' => 'submit'));
 				$div->appendChild($button);
 			}
@@ -741,25 +757,25 @@
 				switch($key) {
 					case 'author':
 						$fieldset = new XMLElement('fieldset');
-						$fieldset->appendChild(new XMLElement('legend', 'Author'));
+						$fieldset->appendChild(new XMLElement('legend', __('Author')));
 						$fieldset->appendChild(new XMLElement('p', $link->generate(false)));
 						break;
 					
 					case 'version':
 						$fieldset = new XMLElement('fieldset');
-						$fieldset->appendChild(new XMLElement('legend', 'Version'));
-						$fieldset->appendChild(new XMLElement('p', $value . ', released on ' . DateTimeObj::get(__SYM_DATE_FORMAT__, strtotime($about['release-date']))));
+						$fieldset->appendChild(new XMLElement('legend', __('Version')));
+						$fieldset->appendChild(new XMLElement('p', $value . ', ' . __('released on') . ' ' . DateTimeObj::get(__SYM_DATE_FORMAT__, strtotime($about['release-date']))));
 						break;
 						
 					case 'description':
 						$fieldset = new XMLElement('fieldset');
-						$fieldset->appendChild(new XMLElement('legend', 'Description'));
+						$fieldset->appendChild(new XMLElement('legend', __('Description')));
 						$fieldset->appendChild((is_object($about['description']) ? $about['description'] : new XMLElement('p', $about['description'])));
 					
 					case 'example':
 						if (is_callable(array($datasource, 'example'))) {
 							$fieldset = new XMLElement('fieldset');
-							$fieldset->appendChild(new XMLElement('legend', 'Example XML'));
+							$fieldset->appendChild(new XMLElement('legend', __('Example XML')));
 
 							$example = $datasource->example();
 
@@ -810,11 +826,27 @@
 				# Description: Prior to deleting the datasource file. Target file path is provided.
 				#$ExtensionManager->notifyMembers('Delete', getCurrentPage(), array("file" => DATASOURCES . "/data." . $_REQUEST['file'] . ".php"));
 
-		    	if(!General::deleteFile(DATASOURCES . '/data.' . $this->_context[1] . '.php'))
+		    	if(!General::deleteFile(DATASOURCES . '/data.' . $this->_context[1] . '.php')){
 					$this->pageAlert(__('Failed to delete <code>%s</code>. Please check permissions.', array($this->_context[1])), Alert::ERROR);
+				}
+				else{
 
-		    	else redirect(URL . '/symphony/blueprints/components/');
-						
+					$pages = Symphony::Database()->fetch("SELECT * FROM `tbl_pages` WHERE `data_sources` REGEXP '[[:<:]]".$this->_context[1]."[[:>:]]' ");
+
+					if(is_array($pages) && !empty($pages)){
+						foreach($pages as $page){
+							
+							$data_sources = preg_split('/\s*,\s*/', $page['data_sources'], -1, PREG_SPLIT_NO_EMPTY);
+							$data_sources = array_flip($data_sources);
+							unset($data_sources[$this->_context[1]]);
+							
+							$page['data_sources'] = implode(',', array_flip($data_sources));
+							
+							Symphony::Database()->update($page, 'tbl_pages', "`id` = '".$page['id']."'");
+						}
+					}
+					redirect(URL . '/symphony/blueprints/components/');
+				}
 			} 
 		}
 		
@@ -890,10 +922,10 @@
 			$isDuplicate = false;
 			$queueForDeletion = NULL;
 			
-			if($this->_context[0] == 'new' && @is_file($file)) $isDuplicate = true;
+			if($this->_context[0] == 'new' && is_file($file)) $isDuplicate = true;
 			elseif($this->_context[0] == 'edit'){
 				$existing_handle = $this->_context[1];
-				if($classname != $existing_handle && @is_file($file)) $isDuplicate = true;
+				if($classname != $existing_handle && is_file($file)) $isDuplicate = true;
 				elseif($classname != $existing_handle) $queueForDeletion = DATASOURCES . '/data.' . $existing_handle . '.php';			
 			}
 			
@@ -935,7 +967,7 @@
 						$params['order'] = $fields['order'];
 						$params['limit'] = $fields['max_records'];						
 						$params['redirectonempty'] = (isset($fields['redirect_on_empty']) ? 'yes' : 'no');
-						$params['requiredparam'] = $fields['required_url_param'];
+						$params['requiredparam'] = trim($fields['required_url_param']);
 						$params['paramoutput'] = $fields['param'];
 						$params['sort'] = $fields['sort'];
 						$params['startpage'] = $fields['page_number'];
@@ -950,7 +982,7 @@
 					
 						$params['order'] = $fields['order'];
 						$params['redirectonempty'] = (isset($fields['redirect_on_empty']) ? 'yes' : 'no');
-						$params['requiredparam'] = $fields['required_url_param'];			
+						$params['requiredparam'] = trim($fields['required_url_param']);			
 						
 						$dsShell = str_replace('<!-- GRAB -->', "include(TOOLKIT . '/data-sources/datasource.navigation.php');", $dsShell);
 						
@@ -1007,7 +1039,7 @@
 						$params['group'] = $fields['group'];
 						$params['limit'] = $fields['max_records'];
 						$params['redirectonempty'] = (isset($fields['redirect_on_empty']) ? 'yes' : 'no');
-						$params['requiredparam'] = $fields['required_url_param'];
+						$params['requiredparam'] = trim($fields['required_url_param']);
 						$params['paramoutput'] = $fields['param'];
 						$params['sort'] = $fields['sort'];
 						$params['startpage'] = $fields['page_number'];

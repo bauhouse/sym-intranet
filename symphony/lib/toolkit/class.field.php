@@ -1,6 +1,6 @@
 <?php
 	
-	Class Field extends Object{
+	Class Field{
 		protected $_key = 0;
 		protected $_fields;
 		protected $_Parent;
@@ -31,10 +31,6 @@
 			$this->_showcolumn = true;
 			
 			$this->_handle = (strtolower(get_class($this)) == 'field' ? 'field' : strtolower(substr(get_class($this), 5)));
-
-			## Since we are not sure where the Admin object is, inspect
-			## all the parent objects
-			$this->catalogueParentObjects();
 
 			if(class_exists('Administration')) $this->_engine = Administration::instance();
 			elseif(class_exists('Frontend')) $this->_engine = Frontend::instance();
@@ -186,10 +182,12 @@
 			if ($this->get('element_name') == '') {
 				$errors['element_name'] = __('This is a required field.');
 				
-			} elseif (!preg_match('/^[A-z]([\w\d-_\.]+)?$/i', $this->get('element_name'))) {
+			}
+			elseif (!preg_match('/^[A-z]([\w\d-_\.]+)?$/i', $this->get('element_name'))) {
 				$errors['element_name'] = __('Invalid element name. Must be valid QName.');
 				
-			} elseif($checkForDuplicates) {
+			}
+			elseif($checkForDuplicates) {
 				$sql_id = ($this->get('id') ? " AND f.id != '".$this->get('id')."' " : '');
 				$sql = "
 					SELECT
@@ -285,13 +283,13 @@
 		public function checkPostFieldData($data, &$message, $entry_id=NULL){
 			$message = NULL;
 			
-			if ($this->get('required') == 'yes' && strlen($data) == 0){
+			if ($this->get('required') == 'yes' && empty($data)){
 				$message = __("'%s' is a required field.", array($this->get('label')));
 				
 				return self::__MISSING_FIELDS__;
 			}
 			
-			return self::__OK__;		
+			return self::__OK__;
 		}
 		
 		/*

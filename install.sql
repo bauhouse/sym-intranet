@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `tbl_authors`;
 CREATE TABLE `tbl_authors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `password` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `password` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `last_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -13,6 +13,7 @@ CREATE TABLE `tbl_authors` (
   `primary` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `default_section` int(11) NOT NULL,
   `auth_token_active` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `language` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -115,7 +116,6 @@ CREATE TABLE `tbl_fields_date` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
   `pre_populate` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `calendar` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -125,7 +125,7 @@ DROP TABLE IF EXISTS `tbl_fields_input`;
 CREATE TABLE `tbl_fields_input` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
-  `validator` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -140,18 +140,6 @@ CREATE TABLE `tbl_fields_select` (
   `dynamic_options` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- *** STRUCTURE: `tbl_fields_selectbox_link` ***
-DROP TABLE IF EXISTS `tbl_fields_selectbox_link`;
-CREATE TABLE `tbl_fields_selectbox_link` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `field_id` int(11) unsigned NOT NULL,
-  `allow_multiple_selection` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `related_field_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `limit` int(4) unsigned NOT NULL DEFAULT '20',
-  PRIMARY KEY (`id`),
-  KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_fields_taglist` ***
@@ -159,7 +147,7 @@ DROP TABLE IF EXISTS `tbl_fields_taglist`;
 CREATE TABLE `tbl_fields_taglist` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
-  `validator` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pre_populate_source` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`),
@@ -183,7 +171,7 @@ CREATE TABLE `tbl_fields_upload` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
   `destination` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `validator` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

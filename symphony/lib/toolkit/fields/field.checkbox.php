@@ -30,7 +30,7 @@
 																		 'records' => array(), 'groups' => array());
 				}	
 																					
-				$groups[$this->get('element_name')][$handle]['records'][] = $r;
+				$groups[$this->get('element_name')][$value]['records'][] = $r;
 								
 			}
 
@@ -72,16 +72,39 @@
 
 		public function buildDSRetrivalSQL($data, &$joins, &$where, $andOperation = false) {
 			$field_id = $this->get('id');
-			$value = $this->cleanValue($data[0]);
-			$this->_key++;
-			$joins .= "
-				LEFT JOIN
-					`tbl_entries_data_{$field_id}` AS t{$field_id}_{$this->_key}
-					ON (e.id = t{$field_id}_{$this->_key}.entry_id)
-			";
-			$where .= "
-				AND t{$field_id}_{$this->_key}.value = '{$value}'
-			";
+			
+			if ($andOperation) {
+				foreach ($data as $value) {
+					$this->_key++;
+					$value = $this->cleanValue($value);
+					$joins .= "
+						LEFT JOIN
+							`tbl_entries_data_{$field_id}` AS t{$field_id}_{$this->_key}
+							ON (e.id = t{$field_id}_{$this->_key}.entry_id)
+					";
+					$where .= "
+						AND (t{$field_id}_{$this->_key}.value = '{$value})'
+					";
+				}
+				
+			} else {
+				if (!is_array($data)) $data = array($data);
+				
+				foreach ($data as &$value) {
+					$value = $this->cleanValue($value);
+				}
+				
+				$this->_key++;
+				$data = implode("', '", $data);
+				$joins .= "
+					LEFT JOIN
+						`tbl_entries_data_{$field_id}` AS t{$field_id}_{$this->_key}
+						ON (e.id = t{$field_id}_{$this->_key}.entry_id)
+				";
+				$where .= "
+					AND (t{$field_id}_{$this->_key}.value IN ('{$data}'))
+				";
+			}
 			
 			return true;
 		}
@@ -122,7 +145,13 @@
 			$wrapper->appendChild($label);			
 		}
 		
-		function prepareTableValue($data, XMLElement $link=NULL){
+		public function appendFormattedElement(&$wrapper, $data, $encode=false, $mode=NULL, $entry_id=NULL) {
+			$value = ($data['value'] == 'yes' ? 'Yes' : 'No');
+			
+			$wrapper->appendChild(new XMLElement($this->get('element_name'), ($encode ? General::sanitize($value) : $value)));
+		}
+		
+		public function prepareTableValue($data, XMLElement $link=NULL){
 			return ($data['value'] == 'yes' ? __('Yes') : __('No'));
 		}
 

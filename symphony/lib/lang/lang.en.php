@@ -1,9 +1,24 @@
 <?php
+
+	$about = array(
+		'name' => 'English',
+	);	
 	
-	// Dictionary
-	$dictionary = array();
 	
-	// Alphabetical:
+	/*
+	 * CORE: Symphony
+	 * Localisation strings
+	 */
+ 
+ 	$dictionary = array();
+
+	
+	/*
+	 * CORE: Symphony
+	 * Transliterations
+	 */
+
+	// Alphabetical
 	$transliterations = array(
 		'/À/' => 'A', 		'/Á/' => 'A', 		'/Â/' => 'A', 		'/Ã/' => 'A', 		'/Ä/' => 'Ae', 		
 		'/Å/' => 'A', 		'/Ā/' => 'A', 		'/Ą/' => 'A', 		'/Ă/' => 'A', 		'/Æ/' => 'Ae', 		
@@ -48,14 +63,16 @@
 		'/ŉ/' => 'n',
 	);
 	
-	// Symbolic:
+	// Symbolic
 	$transliterations += array(
 		'/\(/'	=> null,		'/\)/'	=> null,		'/,/'	=> null,
 		'/–/'	=> '-',			'/－/'	=> '-',			'/„/'	=> '"',
 		'/“/'	=> '"',			'/”/'	=> '"',			'/—/'	=> '-',
+		'/¿/'	=> null,		'/‽/'	=> null,		'/¡/'	=> null,
+		'/©/' => 'c'
 	);
 	
-	// Ampersands:
+	// Ampersands
 	$transliterations += array(
 		'/^&(?!&)$/'	=> 'and',
 		'/^&(?!&)/'		=> 'and-',

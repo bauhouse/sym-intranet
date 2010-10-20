@@ -2,7 +2,7 @@
 
 	Class General{
 		
-		const CRLF = "\r\n";
+		const CRLF = PHP_EOL;
 		
 		/***
 		
@@ -320,23 +320,8 @@
 		        }
 		    }
 		    return $input;
-		}
+		}		
 		
-		
-		/***
-		
-		Method: repeatStr
-		Description: This will repeat a string XX number of times.
-		Param: $str - string to repeat
-		       $xx - Number of times to repeat the string
-		Return: resultant string
-		
-		***/		
-		public static function repeatStr($str, $xx){
-			$xx = ceil(max(0, $xx));
-			return ($xx == 0 ? NULL : str_pad('', strlen($str) * $xx, $str));
-		}
-
 		/***
 		
 		Method: substrmin
@@ -489,7 +474,7 @@
 		***/
 		public static function getPostData() {
 			if (!function_exists('merge_file_post_data')) {
-				function merge_file_post_data($type, $file, &$post) {
+				function merge_file_post_data($type, array $file, &$post) {
 					foreach ($file as $key => $value) {
 						if (!isset($post[$key])) $post[$key] = array();
 						if (is_array($value)) merge_file_post_data($type, $value, $post[$key]);
@@ -507,9 +492,12 @@
 			);
 			$post = $_POST;
 			
-			foreach ($_FILES as $key_a => $data_a) {
-				foreach ($data_a as $key_b => $data_b) {
-					$files[$key_b][$key_a] = $data_b;
+			if(is_array($_FILES) && !empty($_FILES)){
+				foreach ($_FILES as $key_a => $data_a) {
+					if(!is_array($data_a)) continue;
+					foreach ($data_a as $key_b => $data_b) {
+						$files[$key_b][$key_a] = $data_b;
+					}
 				}
 			}
 			
@@ -587,7 +575,7 @@
 		***/
 		public static function array_to_xml(XMLElement $parent, array $data, $validate=false) {
 			foreach ($data as $element_name => $value) {
-				if (strlen($value) == 0) continue;
+				if (empty($value)) continue;
 				
 				if (is_int($element_name)) {
 					$child = new XMLElement('item');
@@ -967,10 +955,17 @@
 			$pageinfo->setAttribute('total-entries', $total_entries);
 			$pageinfo->setAttribute('total-pages', $total_pages);
 			$pageinfo->setAttribute('entries-per-page', $entries_per_page);
-			$pageinfo->setAttribute('current-page', $current_page);						
+			$pageinfo->setAttribute('current-page', $current_page);
 
 			return $pageinfo;
 				
+		}
+		
+		// Uses SHA1 or MD5 to create a hash based on some input
+		// This function is currently very basic, but would allow
+		// future expansion. Salting the hash comes to mind.
+		public static function hash($input, $algorithm='sha1'){
+			return call_user_func($algorithm, $input);
 		}
 		
 	}

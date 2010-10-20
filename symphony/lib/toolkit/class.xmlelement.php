@@ -17,7 +17,7 @@
 		private $_placeValueAfterChildElements;
 		private $_no_end_tags;
 		
-		const CRLF = "\r\n";
+		const CRLF = PHP_EOL;
 		
 		function XMLElement($name, $value=NULL, $attributes=array()){
 	
@@ -101,6 +101,7 @@
 		}
 		
 		public function getAttribute($name){
+			if(!isset($this->_attributes[$name])) return NULL;			
 			return $this->_attributes[$name];
 		}
 	
@@ -113,7 +114,7 @@
 		}
 	
 		public function appendChild(XMLElement $child){
-			array_push($this->_children, $child);
+			$this->_children[] = $child;
 		}
 		
 		public function appendChildArray(array $children){
@@ -146,7 +147,7 @@
 				}
 			}
 			
-			$result .= ($indent ? General::repeatStr("\t", $tab_depth) : NULL) . '<' . $this->_name;
+			$result .= ($indent ? str_repeat("\t", $tab_depth) : NULL) . '<' . $this->_name;
 		
 			if(count($this->_attributes ) > 0 ){
 			

@@ -49,14 +49,14 @@
 			}
 			
 			$this->Html->setDTD('<!DOCTYPE html>');
-			$this->Html->setAttribute('lang', __LANG__);
+			$this->Html->setAttribute('lang', Symphony::lang());
 			$this->addElementToHead(new XMLElement('meta', NULL, array('http-equiv' => 'Content-Type', 'content' => 'text/html; charset=UTF-8')), 0);
 			$this->addStylesheetToHead(URL . '/symphony/assets/symphony.duplicator.css', 'screen', 70);
 			$this->addScriptToHead(URL . '/symphony/assets/jquery.js', 50);
-			$this->addScriptToHead(URL . '/symphony/assets/symphony.collapsible.js', 70);
-			$this->addScriptToHead(URL . '/symphony/assets/symphony.orderable.js', 71);
-			$this->addScriptToHead(URL . '/symphony/assets/symphony.duplicator.js', 72);
-			$this->addScriptToHead(URL . '/symphony/assets/admin.js', 60);
+			$this->addScriptToHead(URL . '/symphony/assets/symphony.collapsible.js', 60);
+			$this->addScriptToHead(URL . '/symphony/assets/symphony.orderable.js', 61);
+			$this->addScriptToHead(URL . '/symphony/assets/symphony.duplicator.js', 62);
+			$this->addScriptToHead(URL . '/symphony/assets/admin.js', 70);
 			
 			###
 			# Delegate: InitaliseAdminPageHead
@@ -149,6 +149,9 @@
 		}
 		
 		function appendFooter(){
+		
+			$version = new XMLElement('p', 'Symphony ' . Symphony::Configuration()->get('version', 'symphony'), array('id' => 'version'));
+			$this->Form->appendChild($version);
 						
 			$ul = new XMLElement('ul');
 			$ul->setAttribute('id', 'usr');
@@ -255,15 +258,16 @@
 
 									if($can_access_child) {
 										
-										## Make sure preferences menu only shows if extensions are subscribed to it
+										## Make sure preferences menu only shows if multiple languages or extension preferences are available
 										if($c['name'] == __('Preferences') && $n['name'] == __('System')){
 											$extensions = Symphony::Database()->fetch("
 													SELECT * 
 													FROM `tbl_extensions_delegates` 
 													WHERE `delegate` = 'AddCustomPreferenceFieldsets'"
 											);
-											
-											if(!is_array($extensions) || empty($extensions)){
+
+											$l = Lang::getAvailableLanguages(new ExtensionManager($this->_Parent));
+											if(count($l) == 1 && (!is_array($extensions) || empty($extensions))){
 												continue;
 											}
 											
@@ -370,7 +374,7 @@
 				}
 				
 				$nav[$index] = array(
-					'name' => (string)$content->name,
+					'name' => __(strval($content->name)),
 					'index' => $index,
 					'children' => array()
 				);
@@ -385,7 +389,7 @@
 						
 						$item = array(
 							'link' => (string)$child->attributes()->link,
-							'name' => (string)$child->attributes()->name,
+							'name' => __(strval($child->attributes()->name)),
 							'visible' => ((string)$child->attributes()->visible == 'no' ? 'no' : 'yes'),
 						);
 						
@@ -427,10 +431,11 @@
 				}
 			}
 			
-			$extensions = $this->_Parent->ExtensionManager->listInstalledHandles();
+			$extensions = Administration::instance()->ExtensionManager->listInstalledHandles();
 
 			foreach($extensions as $e){
-				$info = $this->_Parent->ExtensionManager->about($e);
+				$info = Administration::instance()->ExtensionManager->about($e);
+
 				if(isset($info['navigation']) && is_array($info['navigation']) && !empty($info['navigation'])){
 					
 					foreach($info['navigation'] as $item){
@@ -440,7 +445,7 @@
 						switch($type){
 							
 							case Extension::NAV_GROUP:
-							
+
 								$index = General::array_find_available_index($nav, $item['location']);
 
 								$nav[$index] = array(
@@ -480,17 +485,33 @@
 								}
 								
 								if(!is_numeric($item['location'])){
-									$item['location'] = $this->__findLocationIndexFromName($nav, $item['location']);
+									// is a navigation group
+									$group_name = $item['location'];
+									$group_index = $this->__findLocationIndexFromName($nav, $item['location']);
+								} else {
+									// is a legacy numeric index
+									$group_index = $item['location'];
 								}
 								
-								$nav[$item['location']]['children'][] = array(
-									
+								$child = array(									
 									'link' => $link,
 									'name' => $item['name'],
 									'visible' => ($item['visible'] == 'no' ? 'no' : 'yes'),
-									'limit' => (!is_null($item['limit']) ? $item['limit'] : NULL)
-									
+									'limit' => (!is_null($item['limit']) ? $item['limit'] : NULL)									
 								);
+
+								if ($group_index === false) {
+									// add new navigation group
+									$nav[] = array(
+										'name' => $group_name,
+										'index' => $group_index,
+										'children' => array($child),
+										'limit' => (!is_null($item['limit']) ? $item['limit'] : NULL)
+									);
+								} else {
+									// add new location by index
+									$nav[$group_index]['children'][] = $child;
+								}
 
 						
 								break;
@@ -500,26 +521,32 @@
 					}
 					
 				}
+				
 			}
-			
+
 			####
 			# Delegate: ExtensionsAddToNavigation
-			# Description: After building the Navigation properties array. This is specifically for extentions to add their groups to the navigation or items to groups,
-			#			   already in the navigation. Note: THIS IS FOR ADDING ONLY! If you need to edit existing navigation elements, use the 'NavigationPreRender' delegate.
+			# Description: After building the Navigation properties array. This is specifically 
+			# 			for extentions to add their groups to the navigation or items to groups,
+			# 			already in the navigation. Note: THIS IS FOR ADDING ONLY! If you need 
+			#			to edit existing navigation elements, use the 'NavigationPreRender' delegate.
 			# Global: Yes
-			$this->_Parent->ExtensionManager->notifyMembers('ExtensionsAddToNavigation', '/backend/', array('navigation' => &$nav));
-						
-			$pageCallback = $this->_Parent->getPageCallback();
+			Administration::instance()->ExtensionManager->notifyMembers(
+				'ExtensionsAddToNavigation', '/backend/', array('navigation' => &$nav)
+			);
+			
+			$pageCallback = Administration::instance()->getPageCallback();
 			
 			$pageRoot = $pageCallback['pageroot'] . (isset($pageCallback['context'][0]) ? $pageCallback['context'][0] . '/' : '');
 			$found = $this->__findActiveNavigationGroup($nav, $pageRoot);
 
-			## Normal searches failed. Use a regular expression using the page root. This is less efficent and should never really get invoked
-			## unless something weird is going on
+			## Normal searches failed. Use a regular expression using the page root. This is less 
+			## efficent and should never really get invoked unless something weird is going on
 			if(!$found) $this->__findActiveNavigationGroup($nav, '/^' . str_replace('/', '\/', $pageCallback['pageroot']) . '/i', true);
 
 			ksort($nav);		
 			$this->_navigation = $nav;
+
 		}		
 		
 		private function __findLocationIndexFromName($nav, $name){

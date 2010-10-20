@@ -23,8 +23,10 @@
 		
 		public static $Configuration;
 		public static $Database;
+		public static $Log;
 		
-		public $Log;
+		private static $_lang;
+
 		public $Profiler;
 		public $Cookie;
 		public $Author;
@@ -32,7 +34,7 @@
 		
 		protected static $_instance;
 		
-		const CRLF = "\r\n";
+		const CRLF = PHP_EOL;
 		
 		protected function __construct(){
 			
@@ -48,8 +50,13 @@
 			include(CONFIG);
 			self::$Configuration = new Configuration(true);
 			self::$Configuration->setArray($settings);
-
-			define_safe('__LANG__', (self::$Configuration->get('lang', 'symphony') ? self::$Configuration->get('lang', 'symphony') : 'en'));				
+			
+			DateTimeObj::setDefaultTimezone(self::$Configuration->get('timezone', 'region'));
+			
+			self::$_lang = (self::$Configuration->get('lang', 'symphony') ? self::$Configuration->get('lang', 'symphony') : 'en');		
+			
+			// Legacy support for __LANG__ constant
+			define_safe('__LANG__', self::lang());
 			
 			define_safe('__SYM_DATE_FORMAT__', self::$Configuration->get('date_format', 'region'));
 			define_safe('__SYM_TIME_FORMAT__', self::$Configuration->get('time_format', 'region'));
@@ -58,25 +65,22 @@
 			$this->initialiseLog();
 
 			GenericExceptionHandler::initialise();
-			GenericErrorHandler::initialise($this->Log);
+			GenericErrorHandler::initialise(self::$Log);
 			
 			$this->initialiseCookie();
-			
-			try{
-				Lang::init(LANG . '/lang.%s.php', __LANG__);
-			}
-			catch(Exception $e){
-				trigger_error($e->getMessage(), E_USER_ERROR);
-			}
-
 			$this->initialiseDatabase();
-	
-			if(!$this->initialiseExtensionManager()){
-				throw new SymphonyErrorPage('Error creating Symphony extension manager.');
-			}
-
-			DateTimeObj::setDefaultTimezone(self::$Configuration->get('timezone', 'region'));
+			$this->initialiseExtensionManager();
 			
+			if(!self::isLoggedIn()){
+				GenericExceptionHandler::$enabled = false;
+			}
+			
+			Lang::loadAll($this->ExtensionManager);
+			
+		}
+		
+		public function lang(){
+			return self::$_lang;
 		}
 		
 		public function initialiseCookie(){
@@ -87,12 +91,15 @@
 			define_safe('__SYM_COOKIE_PATH__', $cookie_path);
 			define_safe('__SYM_COOKIE_PREFIX_', self::$Configuration->get('cookie_prefix', 'symphony'));
 						
-			$this->Cookie = new Cookie(__SYM_COOKIE_PREFIX_, TWO_WEEKS, __SYM_COOKIE_PATH__);			
+			$this->Cookie = new Cookie(__SYM_COOKIE_PREFIX_, TWO_WEEKS, __SYM_COOKIE_PATH__);
 		}
 		
 		public function initialiseExtensionManager(){
 			$this->ExtensionManager = new ExtensionManager($this);
-			return ($this->ExtensionManager instanceof ExtensionManager);
+			
+			if(!($this->ExtensionManager instanceof ExtensionManager)){
+				throw new SymphonyErrorPage('Error creating Symphony extension manager.');
+			}
 		}
 		
 		
@@ -105,6 +112,8 @@
 		}
 
 		public function initialiseDatabase(){
+			if (self::$Database) return true;
+			
 			$error = NULL;
 			
 			$driver_filename = TOOLKIT . '/class.' . self::$Configuration->get('driver', 'database') . '.php';
@@ -153,20 +162,22 @@
 		
 		public function initialiseLog(){
 			
-			$this->Log = new Log(ACTIVITY_LOG);
-			$this->Log->setArchive((self::$Configuration->get('archive', 'log') == '1' ? true : false));
-			$this->Log->setMaxSize(intval(self::$Configuration->get('maxsize', 'log')));
+			self::$Log = new Log(ACTIVITY_LOG);
+			self::$Log->setArchive((self::$Configuration->get('archive', 'log') == '1' ? true : false));
+			self::$Log->setMaxSize(intval(self::$Configuration->get('maxsize', 'log')));
 				
-			if($this->Log->open() == 1){
-				$this->Log->writeToLog('Symphony Log', true);
-				$this->Log->writeToLog('Version: '. self::$Configuration->get('version', 'symphony'), true);
-				$this->Log->writeToLog('--------------------------------------------', true);
+			if(self::$Log->open(Log::APPEND, self::$Configuration->get('write_mode', 'file')) == 1){
+				self::$Log->writeToLog('Symphony Log', true);
+				self::$Log->writeToLog('Version: '. self::$Configuration->get('version', 'symphony'), true);
+				self::$Log->writeToLog('--------------------------------------------', true);
 			}
 						
 		}
 
 		public function isLoggedIn(){
-
+			
+			if ($this->Author) return true;
+			
 			$username = self::$Database->cleanValue($this->Cookie->get('username'));
 			$password = self::$Database->cleanValue($this->Cookie->get('pass'));
 			
@@ -178,6 +189,9 @@
 					$this->_user_id = $id;
 					self::$Database->update(array('last_seen' => DateTimeObj::get('Y-m-d H:i:s')), 'tbl_authors', " `id` = '$id'");
 					$this->Author = new Author($id);
+					
+					$this->reloadLangFromAuthorPreference();
+					
 					return true;
 				}
 				
@@ -190,15 +204,15 @@
 		public function logout(){
 			$this->Cookie->expire();
 		}
-		
+
 		public function login($username, $password, $isHash=false){
 			
 			$username = self::$Database->cleanValue($username);
 			$password = self::$Database->cleanValue($password);
 			
-			if(strlen(trim($username)) > 0 && strlen(trim($password)) > 0){			
+			if(strlen(trim($username)) > 0 && strlen(trim($password)) > 0){
 				
-				if(!$isHash) $password = md5($password);
+				if(!$isHash) $password = General::hash($password);
 
 				$id = self::$Database->fetchVar('id', 0, "SELECT `id` FROM `tbl_authors` WHERE `username` = '$username' AND `password` = '$password' LIMIT 1");
 
@@ -208,6 +222,9 @@
 					$this->Cookie->set('username', $username);
 					$this->Cookie->set('pass', $password);
 					self::$Database->update(array('last_seen' => DateTimeObj::get('Y-m-d H:i:s')), 'tbl_authors', " `id` = '$id'");
+					
+					$this->reloadLangFromAuthorPreference();
+
 					return true;
 				}
 			}
@@ -232,10 +249,14 @@
 			}
 			
 			else{
-				$row = self::$Database->fetchRow(0, "SELECT `id`, `username`, `password` 
-													 FROM `tbl_authors` 
-													 WHERE SUBSTR(MD5(CONCAT(`username`, `password`)), 1, 8) = '$token' AND `auth_token_active` = 'yes' 
-													 LIMIT 1");				
+				$row = self::$Database->fetchRow(0, sprintf(
+					"SELECT `id`, `username`, `password` 
+					FROM `tbl_authors` 
+					WHERE SUBSTR(%s(CONCAT(`username`, `password`)), 1, 8) = '%s' 
+					AND `auth_token_active` = 'yes' 
+					LIMIT 1",
+					'SHA1', $token
+				));
 			}
 
 			if($row){
@@ -244,11 +265,30 @@
 				$this->Cookie->set('username', $row['username']);
 				$this->Cookie->set('pass', $row['password']);
 				self::$Database->update(array('last_seen' => DateTimeObj::getGMT('Y-m-d H:i:s')), 'tbl_authors', " `id` = '$id'");
+				
+				$this->reloadLangFromAuthorPreference();
+				
 				return true;
 			}
 			
 			return false;
 						
+		}
+		
+		public function reloadLangFromAuthorPreference(){	
+			
+			$lang = $this->Author->get('language');
+			if($lang && $lang != self::lang()){
+				self::$_lang = $lang;
+				if($lang != 'en') {
+					Lang::loadAll($this->ExtensionManager);
+				}
+				else {
+					// As there is no English dictionary the default dictionary needs to be cleared
+					Lang::clear();
+				}
+			}
+			
 		}
 		
 		public function resolvePageTitle($page_id) {

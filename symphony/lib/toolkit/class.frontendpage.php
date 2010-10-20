@@ -265,9 +265,7 @@
 			# Delegate: FrontendParamsPostResolve
 			# Description: Access to the resolved param pool, including additional parameters provided by Data Source outputs
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('FrontendParamsPostResolve', '/frontend/', array('params' => $this->_param));
-			
-			## TODO: Add delegate for adding/removing items in the params
+			$this->ExtensionManager->notifyMembers('FrontendParamsPostResolve', '/frontend/', array('params' => &$this->_param));
 
 			$xsl = '<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -320,9 +318,11 @@
 				do{
 					$path = implode('/', $pathArr);
 
-					$sql = "SELECT * FROM `tbl_pages`
-							WHERE `path` ".($path ? " = '$path'" : 'IS NULL')." 
-							AND `handle` = '$handle' LIMIT 1";
+					$sql = sprintf(
+						"SELECT * FROM `tbl_pages` WHERE `path` %s AND `handle` = '%s' LIMIT 1",
+						($path ? " = '".Symphony::Database()->cleanValue($path)."'" : 'IS NULL'), 
+						Symphony::Database()->cleanValue($handle)
+					);
 
 					if($row = Symphony::Database()->fetchRow(0, $sql)){
 
@@ -338,7 +338,7 @@
 			
 				if(empty($valid_page_path)) return;
 			
-				if(!$this->__isSchemaValid($row['id'], $page_extra_bits)) return;
+				if(!$this->__isSchemaValid($row['params'], $page_extra_bits)) return;
 			}
 
 			##Process the extra URL params
@@ -387,9 +387,10 @@
 			return Symphony::Database()->fetchCol('type', "SELECT `type` FROM `tbl_pages_types` WHERE `page_id` = '{$page_id}' ");
 		}
 		
-		private function __isSchemaValid($page_id, $bits){
+		private function __isSchemaValid($schema, $bits){
 	
-			$schema = Symphony::Database()->fetchVar('params', 0, "SELECT `params` FROM `tbl_pages` WHERE `id` = '".$page_id."' LIMIT 1");					
+			if (is_numeric($schema)) $schema = Symphony::Database()->fetchVar('params', 0, "SELECT `params` FROM `tbl_pages` WHERE `id` = '1' LIMIT 1");
+			
 			$schema_arr = preg_split('/\//', $schema, -1, PREG_SPLIT_NO_EMPTY);		
 	
 			return (count($schema_arr) >= count($bits));
@@ -555,7 +556,7 @@
 					$dbstats = Symphony::Database()->getStatistics();
 					$queries = $dbstats['queries'] - $queries;
 
-					$this->_Parent->Profiler->sample($handle, PROFILE_LAP, 'Datasource', $queries);
+					$this->_Parent->Profiler->sample($handle, PROFILE_LAP, 'Event', $queries);
 				
 				}
 			}

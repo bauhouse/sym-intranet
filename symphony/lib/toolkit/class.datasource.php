@@ -12,12 +12,13 @@
 		var $_dependencies;
 		var $_force_empty_result;
 		
-		const CRLF = "\r\n";
+		const CRLF = PHP_EOL;
 		
 		function __construct(&$parent, $env=NULL, $process_params=true){
 			$this->_Parent = $parent;
 			$this->_force_empty_result = false;
-
+			$this->_dependencies = array();
+			
 			if($process_params){ 
 				$this->processParameters($env);
 			}
@@ -42,11 +43,18 @@
 			
 			if(isset($this->dsParamSORT)) $this->dsParamSORT = $this->__processParametersInString($this->dsParamSORT, $this->_env);
 
-			if(isset($this->dsParamSTARTPAGE)) $this->dsParamSTARTPAGE = $this->__processParametersInString($this->dsParamSTARTPAGE, $this->_env);
+			if(isset($this->dsParamSTARTPAGE)) {
+				$this->dsParamSTARTPAGE = $this->__processParametersInString($this->dsParamSTARTPAGE, $this->_env);
+				if ($this->dsParamSTARTPAGE == '') $this->dsParamSTARTPAGE = '1';
+			}
 		
 			if(isset($this->dsParamLIMIT)) $this->dsParamLIMIT = $this->__processParametersInString($this->dsParamLIMIT, $this->_env);
 		
-			if(isset($this->dsParamREQUIREDPARAM) && $this->__processParametersInString($this->dsParamREQUIREDPARAM, $this->_env, false) == '') {
+			if(
+				isset($this->dsParamREQUIREDPARAM) 
+				&& strlen(trim($this->dsParamREQUIREDPARAM)) > 0 
+				&& $this->__processParametersInString(trim($this->dsParamREQUIREDPARAM), $this->_env, false) == ''
+			) {
 				$this->_force_empty_result = true; // don't output any XML
 				$this->dsParamPARAMOUTPUT = NULL; // don't output any parameters
 				$this->dsParamINCLUDEDELEMENTS = NULL; // don't query any fields in this section
@@ -77,8 +85,8 @@
 			if(!isset($this->dsParamINCLUDEDELEMENTS) || !is_array($this->dsParamINCLUDEDELEMENTS) || empty($this->dsParamINCLUDEDELEMENTS)) return;
 			
 			foreach($this->dsParamINCLUDEDELEMENTS as $index) {
-				
-				if(!is_object($fields[$index])){
+				if(!isset($fields[$index])) continue;
+				elseif(!is_object($fields[$index])){
 					trigger_error(__('%s is not a valid object. Failed to append to XML.', array($index)), E_USER_WARNING);
 					continue;
 				}

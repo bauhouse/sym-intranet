@@ -10,16 +10,21 @@
 			$this->_fields = array();
 			$this->_accessSections = NULL; 
 			
-			if(!is_null($id)) $this->loadAuthor($id);
+			if(!is_null($id) && is_numeric($id)){
+				$this->loadAuthor($id);
+			}
 		}
 		
 		public function loadAuthor($id){
-			if(!is_object(Symphony::Database())) return false;
+			if(!is_object(Symphony::Database()) || !is_numeric($id)) return false;
+
+			$row = Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_authors` WHERE `id` = '$id' LIMIT 1");
+
+			if(!is_array($row) || empty($row)) return false;
 			
-			if(!$row = Symphony::Database()->fetchRow(0, "SELECT * FROM `tbl_authors` WHERE `id` = '$id' LIMIT 1")) return false;
-			
-			foreach($row as $key => $val)
+			foreach($row as $key => $val){
 				$this->set($key, $val);
+			}
 			
 			return true;
 		}
@@ -37,7 +42,7 @@
 		
 			if($this->get('auth_token_active') == 'no') return false;
 
-			$t = General::substrmin(md5($this->get('username') . $this->get('password')), 8);
+			$t = General::substrmin(General::hash($this->get('username') . $this->get('password')), 8);
 		
 			if($t == $token) return true; 
 		
@@ -46,7 +51,7 @@
 		}
 	
 		public function createAuthToken(){
-			return General::substrmin(md5($this->get('username') . $this->get('password')), 8);	
+			return General::substrmin(General::hash($this->get('username') . $this->get('password')), 8);	
 		}
 		
 		public function isTokenActive(){

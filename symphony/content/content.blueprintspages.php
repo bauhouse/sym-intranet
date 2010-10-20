@@ -206,7 +206,7 @@
 					LIMIT 1
 				");
 			
-			if(!@is_file($file_abs)) redirect(URL . '/symphony/blueprints/pages/');
+			if(!is_file($file_abs)) redirect(URL . '/symphony/blueprints/pages/');
 			
 			$fields['body'] = @file_get_contents($file_abs);
 			
@@ -669,7 +669,7 @@
 				
 			$parent_link_suffix = NULL;
 			if(isset($_REQUEST['parent']) && is_numeric($_REQUEST['parent'])){
-				$parent_link_suffix = "?parent=" . $_REQUEST['parent'];
+				$parent_link_suffix = '?parent=' . $_REQUEST['parent'];
 			}
 		
 			if(@array_key_exists('delete', $_POST['action'])) {
@@ -745,8 +745,8 @@
 					unset($fields['type']);
 					
 					$fields['parent'] = ($fields['parent'] != __('None') ? $fields['parent'] : null);
-					$fields['data_sources'] = @implode(',', $fields['data_sources']);			
-					$fields['events'] = @implode(',', $fields['events']);
+					$fields['data_sources'] = is_array($fields['data_sources']) ? implode(',', $fields['data_sources']) : NULL;
+					$fields['events'] = is_array($fields['events']) ? implode(',', $fields['events']) : NULL;
 					$fields['path'] = null;
 					
 					if($fields['parent']) {
@@ -767,24 +767,26 @@
 					");
 					
 					// Create or move files:
-					if(empty($current)) {
-						$file_created = $this->__updatePageFiles(
-							$fields['path'], $fields['handle']
-						);
+					if(!$duplicate){
+						if(empty($current)) {
+							$file_created = $this->__updatePageFiles(
+								$fields['path'], $fields['handle']
+							);
 						
-					} else {
-						$file_created = $this->__updatePageFiles(
-							$fields['path'], $fields['handle'],
-							$current['path'], $current['handle']
-						);
-					}
+						} else {
+							$file_created = $this->__updatePageFiles(
+								$fields['path'], $fields['handle'],
+								$current['path'], $current['handle']
+							);
+						}
 					
-					if(!$file_created) {
-						$redirect = null;
-						$this->pageAlert(
-							__('Page could not be written to disk. Please check permissions on <code>/workspace/pages</code>.'),
-							Alert::ERROR
-						);
+						if(!$file_created) {
+							$redirect = null;
+							$this->pageAlert(
+								__('Page could not be written to disk. Please check permissions on <code>/workspace/pages</code>.'),
+								Alert::ERROR
+							);
+						}
 					}
 					
 					if($duplicate) {

@@ -129,8 +129,7 @@
 	
 			if($this->get('formatter')){
 
-				if(isset($this->_ParentCatalogue['entrymanager'])) $tfm = $this->_ParentCatalogue['entrymanager']->formatterManager;
-				else $tfm = new TextformatterManager($this->_engine);
+				$tfm = new TextformatterManager($this->_engine);
 				
 				$formatter = $tfm->create($this->get('formatter'));
 
@@ -164,7 +163,7 @@
 			return preg_replace('/&(?!(#[0-9]+|#x[0-9a-f]+|amp|lt|gt);)/i', '&amp;', trim($value));
 		}
 		
-		public function appendFormattedElement(&$wrapper, $data, $encode = false, $mode) {
+		public function appendFormattedElement(&$wrapper, $data, $encode = false, $mode = null) {
 			
 			if ($mode == null || $mode == 'formatted') {
 				
@@ -234,7 +233,7 @@
 			$this->appendRequiredCheckbox($div);
 			$group->appendChild($div);
 			
-			$group->appendChild($this->buildFormatterSelect($this->get('formatter'), 'fields['.$this->get('sortorder').'][formatter]', 'Text Formatter'));
+			$group->appendChild($this->buildFormatterSelect($this->get('formatter'), 'fields['.$this->get('sortorder').'][formatter]', __('Text Formatter')));
 			
 			$wrapper->appendChild($group);
 			

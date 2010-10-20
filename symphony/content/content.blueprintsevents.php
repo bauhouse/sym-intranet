@@ -170,10 +170,29 @@
 				# Description: Prior to deleting the event file. Target file path is provided.
 				#$ExtensionManager->notifyMembers('Delete', getCurrentPage(), array("file" => EVENTS . "/event." . $_REQUEST['file'] . ".php"));
 
-		    	if(!General::deleteFile(EVENTS . '/event.' . $this->_context[1] . '.php'))
+		    	if(!General::deleteFile(EVENTS . '/event.' . $this->_context[1] . '.php')){
 					$this->pageAlert(__('Failed to delete <code>%s</code>. Please check permissions.', array($this->_context[1])), Alert::ERROR);
+				}
+				
+		    	else{
+			
+					$pages = Symphony::Database()->fetch("SELECT * FROM `tbl_pages` WHERE `events` REGEXP '[[:<:]]".$this->_context[1]."[[:>:]]' ");
 
-		    	else redirect(URL . '/symphony/blueprints/components/');
+					if(is_array($pages) && !empty($pages)){
+						foreach($pages as $page){
+							
+							$events = preg_split('/\s*,\s*/', $page['events'], -1, PREG_SPLIT_NO_EMPTY);
+							$events = array_flip($events);
+							unset($events[$this->_context[1]]);
+							
+							$page['events'] = implode(',', array_flip($events));
+							
+							Symphony::Database()->update($page, 'tbl_pages', "`id` = '".$page['id']."'");
+						}
+					}
+			
+					redirect(URL . '/symphony/blueprints/components/');
+				}
 						
 			}	
 		}
@@ -193,10 +212,10 @@
 			$isDuplicate = false;
 			$queueForDeletion = NULL;
 			
-			if($this->_context[0] == 'new' && @is_file($file)) $isDuplicate = true;
+			if($this->_context[0] == 'new' && is_file($file)) $isDuplicate = true;
 			elseif($this->_context[0] == 'edit'){
 				$existing_handle = $this->_context[1];
-				if($classname != $existing_handle && @is_file($file)) $isDuplicate = true;
+				if($classname != $existing_handle && is_file($file)) $isDuplicate = true;
 				elseif($classname != $existing_handle) $queueForDeletion = EVENTS . '/event.' . $existing_handle . '.php';
 			}
 			
@@ -327,7 +346,8 @@
 					$documentation_parts[] = new XMLElement('p', __('The send email filter, upon the event successfully saving the entry, takes input from the form and send an email to the desired recipient. <b>This filter currently does not work with the "Allow Multiple" option.</b> The following are the recognised fields:'));
 
 					$documentation_parts[] = self::processDocumentationCode(
-						'send-email[from]'.self::CRLF.
+						'send-email[sender-email] // '.__('Optional').self::CRLF.
+						'send-email[sender-name] // '.__('Optional').self::CRLF.						
 						'send-email[subject] // '.__('Optional').self::CRLF.
 						'send-email[body]'.self::CRLF.
 						'send-email[recipient] // '.__('list of comma author usernames.'));
@@ -339,7 +359,8 @@
 		<label>'.__('Name').' <input type="text" name="fields[author]" value="" /></label>
 		<label>'.__('Email').' <input type="text" name="fields[email]" value="" /></label>
 		<label>'.__('Message').' <textarea name="fields[message]" rows="5" cols="21"></textarea></label>
-		<input name="send-email[from]" value="fields[email]" type="hidden" />
+		<input name="send-email[sender-email]" value="fields[email]" type="hidden" />
+		<input name="send-email[sender-name]" value="fields[author]" type="hidden" />		
 		<input name="send-email[subject]" value="You are being contacted" type="hidden" />
 		<input name="send-email[body]" value="fields[message]" type="hidden" />
 		<input name="send-email[recipient]" value="fred" type="hidden" />

@@ -23,7 +23,7 @@
 	
 	set_error_handler('__errorHandler');
 
-	define('kVERSION', '2.0.7');
+	define('kVERSION', '2.1.1');
 	define('kINSTALL_ASSET_LOCATION', './symphony/assets/installer');	
 	define('kINSTALL_FILENAME', basename(__FILE__));
 	
@@ -66,7 +66,7 @@
 		}
 
 		try{
-			Lang::init('./symphony/lib/lang/lang.%s.php', $lang);
+			Lang::load('./symphony/lib/lang/lang.%s.php', $lang);
 		}
 		catch(Exception $s){
 			return NULL;
@@ -134,7 +134,7 @@
 		die($code);
 
 	}
-	
+
 	// Make sure the install.sql file exists
 	if(!file_exists('install.sql') || !is_readable('install.sql')){
 
@@ -182,8 +182,6 @@
 		die($code);
 
 	}
-
-
 		
 	/////////////////////////
 	
@@ -195,7 +193,8 @@
 		$conf['symphony']['pagination_maximum_rows'] = '17';
 		$conf['symphony']['allow_page_subscription'] = '1';
 		$conf['symphony']['lang'] = 'en';
-		$conf['symphony']['version'] = '2.0.7';
+		$conf['symphony']['version'] = '2.1.1';
+		$conf['symphony']['pages_table_nest_children'] = 'yes';
 		$conf['log']['archive'] = '1';
 		$conf['log']['maxsize'] = '102400';
 		$conf['general']['sitename'] = 'Symphony CMS';
@@ -205,6 +204,7 @@
 		$conf['database']['character_set'] = 'utf8';
 		$conf['database']['character_encoding'] = 'utf8';
 		$conf['database']['runtime_character_set_alter'] = '1';
+		$conf['database']['query_caching'] = 'default';
 		$conf['public']['display_event_xml_in_source'] = 'yes';
 		$conf['region']['time_format'] = 'H:i';
 		$conf['region']['date_format'] = 'd F Y';
