@@ -5,15 +5,17 @@
 <xsl:import href="../utilities/master.xsl"/>
 <xsl:import href="../utilities/date-and-time.xsl"/>
 
-<xsl:output method="xml"
-	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
-	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes"
-	encoding="UTF-8"
-	indent="yes" />
+<xsl:param name="root-url">
+	<xsl:choose>
+		<xsl:when test="$day">../../../../..</xsl:when>
+		<xsl:when test="$month">../../../..</xsl:when>
+		<xsl:when test="$year">../../..</xsl:when>
+		<xsl:otherwise>../..</xsl:otherwise>
+	</xsl:choose>
+</xsl:param>
 
-<xsl:param name="parent-root" select="concat($root,'/',$parent-path)"/>
-<xsl:param name="current-root" select="concat($root,'/',$parent-path,'/',$current-page)"/>
+<xsl:param name="parent-root" select="concat($root-url,$parent-path)"/>
+<xsl:param name="current-root" select="concat($root-url,$parent-path,'/',$current-page)"/>
 
 <xsl:param name="url-year" select="$year"/>
 

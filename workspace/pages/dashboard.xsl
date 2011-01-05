@@ -11,6 +11,8 @@
 	encoding="UTF-8"
 	indent="yes" />
 
+<xsl:param name="root-url" select="'.'" />
+
 <xsl:template match="data">
 	<div class="line">
 		<div class="unit size2of3">

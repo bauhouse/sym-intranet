@@ -12,6 +12,8 @@
 	encoding="UTF-8"
 	indent="yes" />
 
+<xsl:param name="root-url" select="'..'" />
+
 <xsl:template match="/">
 	<xsl:param name="js" select="'jquery'"/>
 	<xsl:param name="css" select="'fluid'"/>
@@ -34,7 +36,7 @@
 						</div>
 						<div id="branding">
 							<div class="group">
-								<h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
+								<h1><a href="{$root-url}/"><xsl:value-of select="$website-name"/></a></h1>
 							</div>
 						</div>
 						<div id="main-nav">

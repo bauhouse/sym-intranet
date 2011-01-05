@@ -5,11 +5,11 @@
 <xsl:template name="main-navigation">
 	<xsl:param name="page-root">
 		<xsl:choose>
-			<xsl:when test="$current-page = 'home'">
-				<xsl:value-of select="$root"/>
+			<xsl:when test="$current-page = 'dashboard'">
+				<xsl:value-of select="$root-url"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat($root, '/', $current-page)"/>
+				<xsl:value-of select="concat($root-url, '/', $current-page)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:param>
@@ -19,9 +19,9 @@
 				<xsl:if test="$current-page = @handle or $root-page = @handle">
 					<xsl:attribute name="class">current</xsl:attribute>
 				</xsl:if>
-				<a href="{$root}/{@handle}/">
+				<a href="{$root-url}/{@handle}/">
 					<xsl:if test="types/type = 'index'">
-						<xsl:attribute name="href"><xsl:value-of select="concat($root, '/')"/></xsl:attribute>
+						<xsl:attribute name="href"><xsl:value-of select="concat($root-url, '/')"/></xsl:attribute>
 					</xsl:if>
 					<xsl:value-of select="name"/>
 				</a>
@@ -33,7 +33,7 @@
 <xsl:template name="secondary-navigation">
 	<ul class="nav main">
 		<li>
-			<a href="{$root}/profile/">
+			<a href="{$root-url}/profile/">
 				<xsl:if test="$current-page = 'profile'">
 					<xsl:attribute name="class">current</xsl:attribute>
 				</xsl:if>
@@ -49,7 +49,7 @@
 			</ul>
 		</li>
 		<li>
-			<a href="{$root}/people/">People Online (8)</a>
+			<a href="{$root-url}/people/">People Online (8)</a>
 			<ul>
 				<li><a>Michael Scott</a></li>
 				<li><a>Jim Halpert</a></li>
@@ -72,7 +72,7 @@
 			</ul>
 		</li>
 		<li>
-			<a href="{$root}/map/">
+			<a href="{$root-url}/map/">
 				<xsl:if test="$current-page = 'map'">
 					<xsl:attribute name="class">current</xsl:attribute>
 				</xsl:if>
@@ -80,7 +80,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="{$root}/help/">
+			<a href="{$root-url}/help/">
 				<xsl:if test="$current-page = 'help'">
 					<xsl:attribute name="class">current</xsl:attribute>
 				</xsl:if>
@@ -88,7 +88,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="{$root}/#logout">Logout</a>
+			<a href="{$root-url}/#logout">Logout</a>
 		</li>
 	</ul>
 </xsl:template>
@@ -99,7 +99,7 @@
 		<div class="block">
 			<div class="unit size1of6">
 				<div class="mod">
-					<h6><a href="{$root}/">My Account</a></h6>
+					<h6><a href="{$root-url}/">My Account</a></h6>
 					<ul class="menu">
 						<li><a>Profile</a></li>
 						<li><a>WebMail</a></li>
@@ -112,8 +112,8 @@
 				<div class="mod">
 					<h6><a>Community</a></h6>
 					<ul class="menu">
-						<li><a href="{$root}/people/">People</a></li>
-						<li><a href="{$root}/calendar/">Calendar</a></li>
+						<li><a href="{$root-url}/people/">People</a></li>
+						<li><a href="{$root-url}/calendar/">Calendar</a></li>
 						<li><a>Gallery</a></li>
 						<li><a>Forum</a></li>
 						<li><a href="#blog">Blog</a></li>
@@ -122,7 +122,7 @@
 			</div>
 			<div class="unit size1of6">
 				<div class="mod">
-					<h6><a href="{$root}/tools/">Tools</a></h6>
+					<h6><a href="{$root-url}/tools/">Tools</a></h6>
 					<ul class="menu">
 						<li><a>Reservations</a></li>
 						<li><a>Services &amp; Volunteers</a></li>
@@ -136,7 +136,7 @@
 				<div class="mod">
 					<h6><a>Information</a></h6>
 					<ul class="menu">
-						<li><a href="{$root}/news/">News</a></li>
+						<li><a href="{$root-url}/news/">News</a></li>
 						<li><a>Media &amp; Marketing</a></li>
 						<li><a>About the Company</a></li>
 						<li><a>Guidelines</a></li>
