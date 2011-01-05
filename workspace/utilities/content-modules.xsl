@@ -7,7 +7,7 @@
     <xsl:param name="num" select="3"/>
     
 	<div class="article">
-		<a href="{$root-url}/news/article/" class="image"><img src="{$workspace}/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
+		<a href="{$root-url}/news/article/" class="image"><img src="{$root-url}/workspace/intranet/img/photo_60x60.jpg" width="60" height="60" alt="photo"/></a>
 		<h5><a href="{$root-url}/news/article/">Article <xsl:value-of select="$count"/> Headline</a></h5>
 		<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. <a href="{$root-url}/news/article/">Read More</a></p>
 	</div>
@@ -40,7 +40,7 @@
     <xsl:param name="count" select="1"/>
     <xsl:param name="num" select="20"/>
     
-	<a href="{$root-url}/people/" class="photo"><img src="{$workspace}/intranet/img/photo_60x60.jpg" alt="Staff photo" title="Jane Smith" /></a>
+	<a href="{$root-url}/people/" class="photo"><img src="{$root-url}/workspace/intranet/img/photo_60x60.jpg" alt="Staff photo" title="Jane Smith" /></a>
 
     <xsl:if test="$count &lt; $num">
         <xsl:call-template name="content-thumbnails">
@@ -54,7 +54,7 @@
     <xsl:param name="count" select="1"/>
     <xsl:param name="num" select="81"/>
     
-	<a href="{$root-url}/people/" class="photo"><img width="30" height="30" src="{$workspace}/intranet/img/photo_60x60.jpg" alt="Staff photo" title="Jane Smith" /></a>
+	<a href="{$root-url}/people/" class="photo"><img width="30" height="30" src="{$root-url}/workspace/intranet/img/photo_60x60.jpg" alt="Staff photo" title="Jane Smith" /></a>
 
     <xsl:if test="$count &lt; $num">
         <xsl:call-template name="content-thumbnails-small">
