@@ -12,7 +12,7 @@
 	encoding="UTF-8"
 	indent="yes" />
 
-<xsl:param name="root-url" select="concat($root, '..')" />
+<xsl:param name="root-url" select="'..'" />
 
 <xsl:template match="/">
 	<xsl:param name="js" select="'jquery'"/>
